@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+    // сервис для конвертации пользователей в UserDetails
     final SecurityUserDetailsService securityUserDetailsService;
 
     public SecurityConfiguration(SecurityUserDetailsService securityUserDetailsService)
@@ -31,20 +32,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         http
                 .csrf().disable()   // отключаем csrf
                 .authorizeRequests()
+//                .antMatchers("/").permitAll()
                 .antMatchers("/").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()    // настраиваем страницу авторизации
                 .loginPage("/login").permitAll()    // разрешаем все запросы к странице авторизации
-                .defaultSuccessUrl("/home") // по умолчанию перенаправляем на главную страницу
+                .defaultSuccessUrl("/") // по умолчанию перенаправляем на главную страницу
                 .and()
                 .logout()   // настраиваем выход из аккаунта
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST")) // чтобы выйти из аккаунта, надо отправить POST запрос
                 .invalidateHttpSession(true)    // закрываем сессию
                 .clearAuthentication(true)      // сбрасываем авторизацию
                 .deleteCookies("JSESSIONID")    // удаляем куки
-                .logoutSuccessUrl("/home");     // перенаправляем на домашнюю страницу
+                .logoutSuccessUrl("/login");     // перенаправляем на домашнюю страницу
     }
 
     @Bean

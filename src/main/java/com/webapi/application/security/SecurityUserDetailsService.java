@@ -15,7 +15,7 @@ public class SecurityUserDetailsService implements UserDetailsService
 {
     List<User> users = new ArrayList<>(2);
 
-    public SecurityUserDetailsService()
+    public SecurityUserDetailsService()     // временная реализация
     {
         User user = new User();
         user.setEmail("test@mail.ru");
@@ -24,6 +24,7 @@ public class SecurityUserDetailsService implements UserDetailsService
         users.add(user);
     }
 
+    // переопределяем метод loadUserByUsername, который даст Spring Security информацию о пользователе
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {

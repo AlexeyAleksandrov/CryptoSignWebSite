@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--<html lang="en">-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,7 +12,7 @@
 <div class="container">
     <h1>CryptoSignService</h1>
     <h3>Авторизация</h3>
-    <form action="/login" method="post">
+    <form th:action="@{/login}" method="post" >
         <p>
             <label for="username">Логин:</label>
             <input type="text" name="username" id="username">
@@ -17,9 +21,13 @@
             <label for="password">Пароль:</label>
             <input type="password" name="password" id="password">
         </p>
+        <div th:if="${param.error}">
+            Вы ввели неправильный пароль
+        </div>
         <p>
             <button type="submit">Войти</button>
         </p>
     </form>
+</div>
 </body>
 </html>
