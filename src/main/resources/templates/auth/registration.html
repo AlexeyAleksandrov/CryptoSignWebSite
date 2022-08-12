@@ -18,6 +18,9 @@
             <div th:if="${loginError}">
                 <a th:text="${loginError}"></a>
             </div>
+            <div th:if="${userExists}">
+                <a>Пользователь не найден</a>
+            </div>
         </p>
         <p>
             <label for="password_first">Пароль:</label><br>

@@ -86,7 +86,7 @@ public class AuthController
                 user.setUsername(signUpUserForm.getUsername());
                 user.setPassword(passwordEncoder.encode(signUpUserForm.getPassword()));
                 usersRepository.save(user);
-                return "redirect:/";
+                return "redirect:/login";
             }
         }
     }
