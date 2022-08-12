@@ -13,10 +13,10 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "name")
+    @Column(name = "firstname")
     private String name;
 
     @Column(name = "surname")
@@ -25,10 +25,10 @@ public class User
     @Column(name = "patronymic")
     private String patronymic;
 
-    @Column(name = "password")
+    @Column(name = "passwd")
     private String password;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private Status status = Status.ACTIVE;
 }

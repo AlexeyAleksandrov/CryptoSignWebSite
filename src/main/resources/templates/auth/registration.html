@@ -22,14 +22,25 @@
         <p>
             <label for="password_first">Пароль:</label><br>
             <input type="password" th:field="${registerForm.password}" id="password_first">
+            <div th:if="${passwordError}">
+                <a th:text="${passwordError}"></a>
+            </div>
         </p>
         <p>
             <label for="password_second">Повтор пароля:</label><br>
             <input type="password" th:field="${registerForm.confirm_password}" id="password_second">
+            <div th:if="${passwordNotConfirm}">
+                <a>Пароли не совпадают</a>
+            </div>
         </p>
-
         <p>
             <button type="submit">Регистрация</button>
+        </p>
+        <p>
+            <a>Уже есть аккаунт? <a th:href="@{/login}">Войдите</a></a>
+        </p>
+        <p>
+            <a>Вернуться на <a th:href="@{/}">главную</a></a>
         </p>
     </form>
 </div>
