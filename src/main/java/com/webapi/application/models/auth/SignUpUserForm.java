@@ -1,4 +1,4 @@
-package com.webapi.application.models;
+package com.webapi.application.models.auth;
 
 import lombok.Data;
 

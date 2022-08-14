@@ -1,4 +1,4 @@
-package com.webapi.application.models;
+package com.webapi.application.models.user;
 
 public enum Status
 {

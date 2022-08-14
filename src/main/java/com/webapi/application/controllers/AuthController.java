@@ -1,18 +1,18 @@
-package com.webapi.application.security;
+package com.webapi.application.controllers;
 
-import com.webapi.application.models.SignUpUserForm;
-import com.webapi.application.models.User;
+import com.webapi.application.models.auth.SignUpUserForm;
+import com.webapi.application.models.sign.SignTemplateModel;
+import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AuthController
@@ -85,6 +85,30 @@ public class AuthController
                 User user = new User();
                 user.setUsername(signUpUserForm.getUsername());
                 user.setPassword(passwordEncoder.encode(signUpUserForm.getPassword()));
+
+                SignTemplateModel signTemplateModel = new SignTemplateModel();
+                signTemplateModel.setSignOwner("Alexey");
+                signTemplateModel.setSignCertificate("1234567890");
+                signTemplateModel.setSignDateStart("15.07.2022");
+                signTemplateModel.setSignDateEnd("15.07.2023");
+                signTemplateModel.setDrawLogo(true);
+                signTemplateModel.setInsertType(0);
+                signTemplateModel.setCheckTransitionToNewPage(false);
+                signTemplateModel.setUser(user);
+
+                if (user.getSignTemplates() == null)
+                {
+                    ArrayList<SignTemplateModel> templateModels = new ArrayList<>();
+                    templateModels.add(signTemplateModel);
+                    user.setSignTemplates(templateModels);
+                }
+                else
+                {
+                    List<SignTemplateModel> templateModels = user.getSignTemplates();
+                    templateModels.add(signTemplateModel);
+                    user.setSignTemplates(templateModels);
+                }
+
                 usersRepository.save(user);
                 return "redirect:/login";
             }

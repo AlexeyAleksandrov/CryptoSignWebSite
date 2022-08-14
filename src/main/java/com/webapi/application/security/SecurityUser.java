@@ -1,7 +1,7 @@
 package com.webapi.application.security;
 
-import com.webapi.application.models.Status;
-import com.webapi.application.models.User;
+import com.webapi.application.models.user.Status;
+import com.webapi.application.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

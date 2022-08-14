@@ -1,8 +1,10 @@
-package com.webapi.application.models;
+package com.webapi.application.models.user;
 
+import com.webapi.application.models.sign.SignTemplateModel;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Table(name = "users")
@@ -32,4 +34,7 @@ public class User
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<SignTemplateModel> signTemplates;
 }
