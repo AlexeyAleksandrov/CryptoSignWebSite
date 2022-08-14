@@ -1,6 +1,6 @@
 package com.webapi.application.services.signImage;
 
-import com.webapi.application.models.FileConvertParamsModel;
+import com.webapi.application.models.sign.CreateSignFormModel;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -64,7 +64,7 @@ public class SignImageCreator
      */
     public void createSignImage(String filePath, String owner, String certificate, String validFrom, String validTo, boolean drawGerb) throws IOException
     {
-        FileConvertParamsModel convertParams = new FileConvertParamsModel();
+        CreateSignFormModel convertParams = new CreateSignFormModel();
         convertParams.setSignOwner(owner);
         convertParams.setSignCertificate(certificate);
         convertParams.setSignDateStart(validFrom);
@@ -80,7 +80,7 @@ public class SignImageCreator
      * @param convertParams параметры изображения - сертификат, владелец и т.д.
      * @throws IOException исключения, при ошибках чтения и записи файлов картинки или герба
      */
-    public void createSignImage(String filePath, FileConvertParamsModel convertParams) throws IOException
+    public void createSignImage(String filePath, CreateSignFormModel convertParams) throws IOException
     {
         String owner = convertParams.getSignOwner();
         String certificate = convertParams.getSignCertificate();

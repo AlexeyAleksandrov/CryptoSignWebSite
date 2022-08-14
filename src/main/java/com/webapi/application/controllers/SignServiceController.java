@@ -4,13 +4,13 @@ import com.webapi.application.services.handlers.Excel.ExcelHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.UploadedFileHandler;
 import com.webapi.application.services.handlers.Word.WordHandler;
-import com.webapi.application.models.FileConvertParamsModel;
+import com.webapi.application.models.sign.CreateSignFormModel;
 import com.webapi.application.services.signImage.SignImageCreator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,35 +18,23 @@ import java.io.*;
 import java.net.URLConnection;
 
 @Controller
-public class FileUploadController
+@AllArgsConstructor // внедрение зависимостей через конструктор
+public class SignServiceController
 {
     public static final String singImagePath = "temp/sign_image.jpg";   // путь сохранения готового изображения подписи
     public static final String signImageLogoPath = "logo/mirea_gerb_52_65.png";  // путь к гербу для изображения
 
-    final SignImageCreator signImageCreator;
-    final WordHandler wordHandler;
-    final ExcelHandler excelHandler;
-    final PDFHandler pdfHandler;
-
-    /**
-     * Внедрение зависимостей через конструктор
-     * @param signImageCreator сервис создания изображения подписи
-     * @param wordHandler обработчик Word документов
-     * @param excelHandler обработчик Excel документов
-     * @param pdfHandler обработчик PDF документов
-     */
-    public FileUploadController(SignImageCreator signImageCreator, WordHandler wordHandler, ExcelHandler excelHandler, PDFHandler pdfHandler)
-    {
-        this.signImageCreator = signImageCreator;
-        this.wordHandler = wordHandler;
-        this.excelHandler = excelHandler;
-        this.pdfHandler = pdfHandler;
-    }
+    // внедрение зависимостей через конструктор
+    final SignImageCreator signImageCreator;    // сервис создания изображения подписи
+    final WordHandler wordHandler;      // обработчик Word документов
+    final ExcelHandler excelHandler;    // обработчик Excel документов
+    final PDFHandler pdfHandler;    // обработчик PDF документов
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index()
+    public String index(Model model)
     {
-        return "index.html";
+        model.addAttribute("signModel", new CreateSignFormModel());
+        return "signservice/create";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
@@ -58,56 +46,26 @@ public class FileUploadController
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    String handleFileUpload(@RequestParam("signOwner") String signOwner, @RequestParam("signCertificate") String signCertificate, @RequestParam("signDateFrom") String signDateFrom, @RequestParam("signDateTo") String signDateTo, @RequestParam(value = "drawLogo", required = false, defaultValue = "true") boolean drawLogo, @RequestParam(value = "checkNewPage", required = false, defaultValue = "false") boolean checkTransitionToNewPage, @RequestParam("insertType") String insertType, @RequestParam("file") MultipartFile file)
+    String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel)
     {
-
-        String currentDir = System.getProperty("user.dir");
-        String fileName = currentDir + "/uploadedfiles/" + file.getOriginalFilename();   // получаем оригинальное название файла, который был загружен
-        FileConvertParamsModel convertParams = new FileConvertParamsModel();    // модель получаемых данных, для удобства
-
-        // заносим полученные параметры в модель данных
-        convertParams.setFileName(file.getOriginalFilename());
-        convertParams.setSignOwner(signOwner);
-        convertParams.setSignCertificate(signCertificate);
-        convertParams.setSignDateStart(signDateFrom);
-        convertParams.setSignDateEnd(signDateTo);
-        convertParams.setDrawLogo(drawLogo);
-        convertParams.setCheckTransitionToNewPage(checkTransitionToNewPage);
-
-        switch (insertType)
+        if(createSignFormModel == null)
         {
-            case "В конец документа":
-            {
-                convertParams.setInsertType(0);
-                break;
-            }
-            case "По координатам":
-            {
-                convertParams.setInsertType(1);
-                break;
-            }
-            case "По тэгу":
-            {
-                convertParams.setInsertType(2);
-                break;
-            }
-            default:
-            {
-                convertParams.setInsertType(-1);
-                break;
-            }
+            return "redirect/index";
         }
+        createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
+        String currentDir = System.getProperty("user.dir");
+        String fileName = currentDir + "/uploadedfiles/" + createSignFormModel.getFile().getOriginalFilename();   // получаем оригинальное название файла, который был загружен
 
         // проверка корректности входных данных
-        if(convertParams.getInsertType() == -1
-                || (convertParams.getInsertType() == 2
+        if(createSignFormModel.getInsertType() == -1
+                || (createSignFormModel.getInsertType() == 2
                 && !(fileName.endsWith(".docx") || fileName.endsWith(".doc") || fileName.endsWith(".rtf"))))
         {
-            return "Error! Выбранный тип подписи неподходит для данного типа файлов!";
+            return "Error! Выбранный тип подписи не подходит для данного типа файлов!";
         }
 
         // начинаем обработку файла
-        if (!file.isEmpty())
+        if (!createSignFormModel.getFile().isEmpty())
         {
             try
             {
@@ -140,32 +98,28 @@ public class FileUploadController
                 }
 
                 // сохраняем файл на устройстве
-                byte[] bytes = file.getBytes();
+                byte[] bytes = createSignFormModel.getFile().getBytes();
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
                 stream.write(bytes);
                 stream.close();
 
                 // создаём изображение подписи
-//                SignImageCreator signImageCreator = new SignImageCreator(); // создаём генератор изображения подписи
                 signImageCreator.setImageGerbPath(signImageLogoPath);       // указываем путь к гербу
-                signImageCreator.createSignImage(singImagePath, convertParams); // создаём изображение подписи
+                signImageCreator.createSignImage(singImagePath, createSignFormModel); // создаём изображение подписи
 
                 UploadedFileHandler documentHandler = null; // обработчик документов
                 String outputFileName = null;
                 // определяем тип полученного файла
                 if (fileName.endsWith(".docx") || fileName.endsWith(".doc") || fileName.endsWith(".rtf"))
                 {
-//                    documentHandler = new WordHandler();
                     documentHandler = wordHandler;
                 }
                 else if (fileName.endsWith(".pdf"))
                 {
-//                    documentHandler = new PDFHandler();   // создаём обработчик
                     documentHandler = pdfHandler;
                 }
                 else if(fileName.endsWith(".xlsx") || fileName.endsWith(".xls"))
                 {
-//                    documentHandler = new ExcelHandler();
                     documentHandler = excelHandler;
                 }
                 else
@@ -175,7 +129,7 @@ public class FileUploadController
 
                 // обрабатываем полученный файл
                 documentHandler.setSingImagePath(singImagePath); // указываем путь к картинке, которую нужно будет вставить
-                documentHandler.setParams(convertParams);    // указываем параметры обработки
+                documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
                 outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
 
                 return "OK! http://localhost:8080/download?file=" + outputFileName;
@@ -231,7 +185,6 @@ public class FileUploadController
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
 
             FileCopyUtils.copy(inputStream, response.getOutputStream());
-
         }
     }
 }

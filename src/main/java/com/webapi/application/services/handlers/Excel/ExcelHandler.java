@@ -2,7 +2,7 @@ package com.webapi.application.services.handlers.Excel;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.uno.Exception;
-import com.webapi.application.controllers.FileUploadController;
+import com.webapi.application.controllers.SignServiceController;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandlerException;
 import com.webapi.application.services.handlers.UploadedFileHandler;
@@ -24,7 +24,7 @@ public class ExcelHandler  extends UploadedFileHandler
 
     public ExcelHandler()
     {
-        singImagePath = FileUploadController.singImagePath;  // путь к картинке, которую надо вставить
+        singImagePath = SignServiceController.singImagePath;  // путь к картинке, которую надо вставить
     }
 
     @Override

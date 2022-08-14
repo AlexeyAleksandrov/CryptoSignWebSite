@@ -5,14 +5,14 @@ import com.sun.star.uno.Exception;
 import com.webapi.application.services.handlers.Excel.ExcelHandlerException;
 import com.webapi.application.services.handlers.PDF.PDFHandlerException;
 import com.webapi.application.services.handlers.Word.WordHandlerException;
-import com.webapi.application.models.FileConvertParamsModel;
+import com.webapi.application.models.sign.CreateSignFormModel;
 
 import java.io.IOException;
 
 public abstract class UploadedFileHandler
 {
     protected String singImagePath = null;
-    protected FileConvertParamsModel params = null;
+    protected CreateSignFormModel params = null;
     protected String currentDir = "";
 
     public String processDocument(String fileName) throws PDFHandlerException, IOException, WordHandlerException, BootstrapException, Exception, ExcelHandlerException { return null; };
@@ -29,12 +29,12 @@ public abstract class UploadedFileHandler
         this.singImagePath = singImagePath;
     }
 
-    public FileConvertParamsModel getParams()
+    public CreateSignFormModel getParams()
     {
         return params;
     }
 
-    public void setParams(FileConvertParamsModel params)
+    public void setParams(CreateSignFormModel params)
     {
         this.params = params;
     }

@@ -18,6 +18,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
+    String[] allowMatchers = {"/", "/signup", "/index", "/upload", "/download**"};
+
     // сервис для конвертации пользователей в UserDetails
     final SecurityUserDetailsService securityUserDetailsService;
 
@@ -33,8 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .csrf().disable()   // отключаем csrf
                 .authorizeRequests()
 //                .antMatchers("/").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/signup").permitAll()
+                .antMatchers(allowMatchers).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
