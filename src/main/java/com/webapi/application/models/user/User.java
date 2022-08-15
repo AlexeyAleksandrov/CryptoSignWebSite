@@ -4,6 +4,7 @@ import com.webapi.application.models.sign.SignTemplateModel;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,6 +36,6 @@ public class User
     @Enumerated(value = EnumType.STRING)
     private Status status = Status.ACTIVE;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<SignTemplateModel> signTemplates;
+    @OneToMany(mappedBy = "user")
+    private List<SignTemplateModel> signTemplates = new ArrayList<>();
 }

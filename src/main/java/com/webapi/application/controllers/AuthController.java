@@ -3,7 +3,9 @@ package com.webapi.application.controllers;
 import com.webapi.application.models.auth.SignUpUserForm;
 import com.webapi.application.models.sign.SignTemplateModel;
 import com.webapi.application.models.user.User;
+import com.webapi.application.repositories.SignTemplatesRepository;
 import com.webapi.application.repositories.UsersRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class AuthController
 {
-    private final UsersRepository usersRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public AuthController(UsersRepository usersRepository, PasswordEncoder passwordEncoder)
-    {
-        this.usersRepository = usersRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final UsersRepository usersRepository;  // репозиторий для работы с пользователями
+    private final PasswordEncoder passwordEncoder;  // кодировщик паролей
+    private final SignTemplatesRepository signTemplatesRepository;  // репозиторий для работы с шаблонами подписей
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model)
@@ -78,6 +76,7 @@ public class AuthController
             if(usersRepository.existsByUsername(signUpUserForm.getUsername()))  // проверяем, что пользователь уже существует
             {
                 model.addAttribute("userExists", true);
+                model.addAttribute("registerForm", signUpUserForm);
                 return "auth/registration";
             }
             else
@@ -96,20 +95,11 @@ public class AuthController
                 signTemplateModel.setCheckTransitionToNewPage(false);
                 signTemplateModel.setUser(user);
 
-                if (user.getSignTemplates() == null)
-                {
-                    ArrayList<SignTemplateModel> templateModels = new ArrayList<>();
-                    templateModels.add(signTemplateModel);
-                    user.setSignTemplates(templateModels);
-                }
-                else
-                {
-                    List<SignTemplateModel> templateModels = user.getSignTemplates();
-                    templateModels.add(signTemplateModel);
-                    user.setSignTemplates(templateModels);
-                }
+                user.getSignTemplates().add(signTemplateModel); // добавляем подпись к пользователю
 
-                usersRepository.save(user);
+                usersRepository.save(user); // сохраняем пользователя
+                signTemplatesRepository.save(signTemplateModel);    // сохраняем шаблон
+
                 return "redirect:/login";
             }
         }

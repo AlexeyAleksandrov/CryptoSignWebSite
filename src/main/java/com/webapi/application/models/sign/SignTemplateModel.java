@@ -1,17 +1,13 @@
 package com.webapi.application.models.sign;
 
 import com.webapi.application.models.user.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "sign_templates")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class SignTemplateModel
 {
     @Id
@@ -19,8 +15,8 @@ public class SignTemplateModel
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(optional=false, cascade=CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "sign_owner")
@@ -35,12 +31,12 @@ public class SignTemplateModel
     @Column(name = "date_end")
     private String signDateEnd;     // поле окончания действия сертификата
 
-    @Column(name = "isDrawLogo")
+    @Column(name = "is_draw_logo")
     private boolean drawLogo;   // флаг отрисовки герба
 
-    @Column(name = "checkNewPage")
+    @Column(name = "check_new_page")
     private boolean checkTransitionToNewPage;   // флаг проверки перехода на новую страницу
 
-    @Column(name = "insertType")
+    @Column(name = "insert_type")
     private int insertType; // тип вставки (0 - классический, 1 - по координатам, 2 - по тэгу)
 }
