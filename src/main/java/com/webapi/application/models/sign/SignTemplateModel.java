@@ -19,6 +19,9 @@ public class SignTemplateModel
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "template_name")
+    private String templateName;    // название подписи
+
     @Column(name = "sign_owner")
     private String signOwner;   // поле владельца подписи
 
@@ -39,4 +42,18 @@ public class SignTemplateModel
 
     @Column(name = "insert_type")
     private int insertType; // тип вставки (0 - классический, 1 - по координатам, 2 - по тэгу)
+
+    public CreateSignFormModel toCreateSignFormModel()
+    {
+        CreateSignFormModel createSignFormModel = new CreateSignFormModel();
+        createSignFormModel.setSignOwner(this.getSignOwner());
+        createSignFormModel.setSignCertificate(this.getSignCertificate());
+        createSignFormModel.setSignDateStart(this.getSignDateStart());
+        createSignFormModel.setSignDateEnd(this.getSignDateEnd());
+        createSignFormModel.setDrawLogo(this.isDrawLogo());
+        createSignFormModel.setCheckTransitionToNewPage(this.isCheckTransitionToNewPage());
+        createSignFormModel.setInsertType(this.getInsertType());
+
+        return createSignFormModel;
+    }
 }

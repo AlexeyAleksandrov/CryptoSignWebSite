@@ -33,5 +33,38 @@
         <a>Вы можете вернуться на <a th:href="@{/}">главную</a></a>
     </p>
 </form>
+
+<div th:if="${signTemplateModels}">
+    <table border="1">
+        <tr>
+            <th>Номер</th>
+            <th>Название</th>
+            <th>Владелец</th>
+            <th>Сертификат</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Рисовать герб</th>
+            <th>Переход на новую страницу</th>
+            <th>Тип вставки</th>
+            <th>Редактировать</th>
+            <th>Удалить</th>
+            <th>Выбрать</th>
+        </tr>
+        <tr th:each="template: ${signTemplateModels}">
+            <td th:text="${templateStat.index + 1}"></td>
+            <td th:text="${template.templateName}"></td>
+            <td th:text="${template.signOwner}"></td>
+            <td th:text="${template.signCertificate}"></td>
+            <td th:text="${template.signDateStart}"></td>
+            <td th:text="${template.signDateEnd}"></td>
+            <td th:text="${template.drawLogo}"></td>
+            <td th:text="${template.checkTransitionToNewPage}"></td>
+            <td th:text="${template.insertType}"></td>
+            <td th:text="Редактировать"></td>
+            <td th:text="Удалить"></td>
+            <td th:text="Выбрать"></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

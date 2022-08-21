@@ -1,5 +1,8 @@
 package com.webapi.application.controllers;
 
+import com.webapi.application.models.sign.SignTemplateModel;
+import com.webapi.application.models.user.User;
+import com.webapi.application.repositories.UsersRepository;
 import com.webapi.application.services.handlers.Excel.ExcelHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.UploadedFileHandler;
@@ -7,6 +10,8 @@ import com.webapi.application.services.handlers.Word.WordHandler;
 import com.webapi.application.models.sign.CreateSignFormModel;
 import com.webapi.application.services.signImage.SignImageCreator;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -16,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor // внедрение зависимостей через конструктор
@@ -30,11 +36,38 @@ public class SignServiceController
     final ExcelHandler excelHandler;    // обработчик Excel документов
     final PDFHandler pdfHandler;    // обработчик PDF документов
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(Model model)
+    // репозитории
+    UsersRepository usersRepository;
+
+    @RequestMapping(value = "/createsign", method = RequestMethod.GET)
+    public String index(Model model, Authentication authentication, @RequestParam(name = "index", required = false, defaultValue = "-1") int index)
     {
-        model.addAttribute("signModel", new CreateSignFormModel());
-        return "signservice/create";
+        CreateSignFormModel createSignFormModel = null;
+        if(authentication != null)  // если пользователь авторизован
+        {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User user = usersRepository.findByUsername(userDetails.getUsername()).orElse(null); // получаем пользователя
+
+            if(user != null)    // если пользователь найден
+            {
+                List<SignTemplateModel> signTemplateModels = user.getSignTemplates();   // получаем список шаблонов
+
+                model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
+
+                if(index >= 0 && index < signTemplateModels.size()) // проверяем границы индекса
+                {
+                    createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
+                }
+            }
+        }
+
+        if(createSignFormModel == null)   // если модель не была добавлена
+        {
+            createSignFormModel = new CreateSignFormModel();
+        }
+
+        model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
+        return "sign/service/create";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
@@ -50,7 +83,7 @@ public class SignServiceController
     {
         if(createSignFormModel == null)
         {
-            return "redirect/index";
+            return "redirect:/createsign";
         }
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         String currentDir = System.getProperty("user.dir");

@@ -6,13 +6,18 @@ import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.SignTemplatesRepository;
 import com.webapi.application.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +36,16 @@ public class AuthController
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage()
+    public String logoutPage(HttpServletRequest request)
     {
+        try
+        {
+            request.logout();   // выходим из сессии
+        }
+        catch (ServletException e)
+        {
+            e.printStackTrace();
+        }
         return "redirect:/login";
     }
 
@@ -44,7 +57,7 @@ public class AuthController
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signUp(@ModelAttribute("form") SignUpUserForm signUpUserForm, Model model)
+    public String signUp(@ModelAttribute("form") SignUpUserForm signUpUserForm, Model model, HttpServletRequest request)
     {
         boolean error = false;  // флаг ошибки
 
@@ -86,6 +99,7 @@ public class AuthController
                 user.setPassword(passwordEncoder.encode(signUpUserForm.getPassword()));
 
                 SignTemplateModel signTemplateModel = new SignTemplateModel();
+                signTemplateModel.setTemplateName("Тестовый шаблон");
                 signTemplateModel.setSignOwner("Alexey");
                 signTemplateModel.setSignCertificate("1234567890");
                 signTemplateModel.setSignDateStart("15.07.2022");
@@ -100,7 +114,19 @@ public class AuthController
                 usersRepository.save(user); // сохраняем пользователя
                 signTemplatesRepository.save(signTemplateModel);    // сохраняем шаблон
 
-                return "redirect:/login";
+                try
+                {
+//                    request.logout();
+                    request.login(signUpUserForm.getUsername(), signUpUserForm.getPassword());  // выполняем принудительную авторизацию
+                    return "redirect:/";
+                }
+                catch (ServletException e)  // если произошла ошибка
+                {
+                    e.printStackTrace();
+                    return "redirect:/login";
+                }
+
+//                return "redirect:/login";
             }
         }
     }
