@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -149,6 +151,81 @@ public class SignTemplatesController
                 }
             }
         }
+    }
 
+    @GetMapping("/delete")
+    private String deletePage(Model model, Authentication authentication)
+    {
+        if(authentication == null)
+        {
+            return "redirect:/login";
+        }
+        else
+        {
+            String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+            User user = usersRepository.findByUsername(userName).orElse(null);
+            if(user == null)
+            {
+                return "redirect:/login";
+            }
+            else
+            {
+                List<SignTemplateModel> templatesList = user.getSignTemplates();    // получаем список шаблонов
+                model.addAttribute("signTemplateModels", templatesList);    // отправляем список шаблонов на форму
+
+                return "sign/templates/delete";
+            }
+        }
+    }
+
+    @PostMapping("/delete")
+    private String delete(@RequestParam("index") int[] indexes, Authentication authentication)
+    {
+        if(authentication == null)
+        {
+            return "redirect:/login";
+        }
+        else
+        {
+            String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+            User user = usersRepository.findByUsername(userName).orElse(null);
+            if(user == null)
+            {
+                return "redirect:/login";
+            }
+            else
+            {
+                List<SignTemplateModel> templatesList = user.getSignTemplates();    // получаем список шаблонов
+//                List<SignTemplateModel> nextTemplatesList = new ArrayList<>();  // список с сертификатами, которые остаются
+                List<SignTemplateModel> deleteTemplatesList = new ArrayList<>();  // список с сертификатами, которые будут удалены
+
+                for (int i = 0; i < templatesList.size(); i++)  // перебор всех шаблонов
+                {
+                    boolean contains = false;   // индекс содержится в списке на удаление
+                    // перебор всех выбранных индексов
+                    for (int index : indexes)
+                    {
+                        if (index == i)
+                        {
+                            contains = true;
+                            break;
+                        }
+                    }
+
+                    if(contains)    // если индекс содержится в списке на удаление
+                    {
+                        deleteTemplatesList.add(templatesList.get(i));  // добавляем в список на удаление
+                    }
+//                    else    // если удалять не надо
+//                    {
+//                        nextTemplatesList.add(templatesList.get(i));    // добавляем в список, который будет сохранён
+//                    }
+                }
+
+                templatesRepository.deleteAll(deleteTemplatesList);   // удаляем выбранные
+
+                return "redirect:/sign/create";
+            }
+        }
     }
 }
