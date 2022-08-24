@@ -11,7 +11,7 @@
 <h1>CryptoSignService</h1>
 <h3>Сервис для визуализации информации об электронной подписи в документе</h3>
 <h2>Подпись документа</h2>
-<form method="POST" enctype="multipart/form-data" th:action="@{/upload}" th:object="${signModel}">
+<form method="POST" enctype="multipart/form-data" th:action="@{/sign/upload}" th:object="${signModel}">
     <label>Документ: <input type="file" th:field="*{file}"></label><br>
     <label>Владелец: <input type="text" th:field="*{signOwner}"> </label><br>
     <label>Сертификат: <input type="text" th:field="*{signCertificate}"></label><br>
@@ -60,11 +60,18 @@
             <td th:text="${template.drawLogo}"></td>
             <td th:text="${template.checkTransitionToNewPage}"></td>
             <td th:text="${template.insertType}"></td>
-            <td th:text="Редактировать"></td>
+            <td><a th:text="Редактировать" th:href="@{'/templates/edit/' + ${templateStat.index}}"></a></td>
             <td th:text="Удалить"></td>
-            <td th:text="Выбрать"></td>
+            <td><a th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></td>
         </tr>
     </table>
 </div>
+
+<div>
+    <p>
+        <a>Вы можете <a th:href="@{/templates/create}">создать шаблон подписи</a></a>
+    </p>
+</div>
+
 </body>
 </html>

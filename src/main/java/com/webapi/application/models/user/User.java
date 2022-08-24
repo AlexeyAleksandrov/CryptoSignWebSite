@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -38,4 +39,17 @@ public class User
 
     @OneToMany(mappedBy = "user")
     private List<SignTemplateModel> signTemplates = new ArrayList<>();
+
+    public List<SignTemplateModel> getSignTemplates()
+    {
+        signTemplates.sort(new Comparator<SignTemplateModel>()
+        {
+            @Override
+            public int compare(SignTemplateModel o1, SignTemplateModel o2)
+            {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });     // выполняем сортировку списка по возрастанию id
+        return signTemplates;
+    }
 }

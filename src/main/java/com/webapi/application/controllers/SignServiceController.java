@@ -21,10 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor // внедрение зависимостей через конструктор
+@RequestMapping("/sign")
 public class SignServiceController
 {
     public static final String singImagePath = "temp/sign_image.jpg";   // путь сохранения готового изображения подписи
@@ -39,7 +41,7 @@ public class SignServiceController
     // репозитории
     UsersRepository usersRepository;
 
-    @RequestMapping(value = "/createsign", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String index(Model model, Authentication authentication, @RequestParam(name = "index", required = false, defaultValue = "-1") int index)
     {
         CreateSignFormModel createSignFormModel = null;
@@ -50,8 +52,8 @@ public class SignServiceController
 
             if(user != null)    // если пользователь найден
             {
+                // загружаем список шаблонов пользователя
                 List<SignTemplateModel> signTemplateModels = user.getSignTemplates();   // получаем список шаблонов
-
                 model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
 
                 if(index >= 0 && index < signTemplateModels.size()) // проверяем границы индекса
@@ -83,7 +85,7 @@ public class SignServiceController
     {
         if(createSignFormModel == null)
         {
-            return "redirect:/createsign";
+            return "redirect:/sign/create";
         }
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         String currentDir = System.getProperty("user.dir");
@@ -165,7 +167,7 @@ public class SignServiceController
                 documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
                 outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
 
-                return "OK! http://localhost:8080/download?file=" + outputFileName;
+                return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
             }
             catch (Exception e)
             {

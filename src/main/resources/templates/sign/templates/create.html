@@ -11,7 +11,7 @@
 <h1>CryptoSignService</h1>
 <h3>Сервис для визуализации информации об электронной подписи в документе</h3>
 <h2>Создание шаблона подписи</h2>
-<form method="POST" enctype="multipart/form-data" th:action="@{/upload}" th:object="${templateModel}">
+<form method="POST" th:action="@{/templates/create}" th:object="${templateModel}">
     <div th:if="${notlogin}">
         <a>Для использования сервиса <a th:href="@{/signup}">зарегистрируйтесь</a> или <a th:href="@{/login}">войдите</a> в свой аккаунт.</a>
     </div>
@@ -19,7 +19,7 @@
         <a>Ошибка авторизации! Пожалуйста, <a th:href="@{/signup}">зарегистрируйтесь</a> или <a th:href="@{/login}">войдите</a> в свой аккаунт.</a>
     </div>
     <div th:if="${login}">
-        <label>Название шаблона: <input type="text" th:field="*{templateName}"></label>
+        <label>Название шаблона: <input type="text" th:field="*{templateName}"></label><br>
         <label>Владелец: <input type="text" th:field="*{signOwner}"> </label><br>
         <label>Сертификат: <input type="text" th:field="*{signCertificate}"></label><br>
         <label>Действителен с <input type="date" th:field="*{signDateStart}"> до <input type="date" th:field="*{signDateEnd}"></label><br>
@@ -34,7 +34,7 @@
             <label for="submit">Подпись документа:</label>
         </p>
         <p>
-            <input type="submit" value="Подписать" id="submit">
+            <input type="submit" value="Создать" id="submit">
         </p>
         <p>
             <a>Вы можете вернуться на <a th:href="@{/}">главную</a></a>

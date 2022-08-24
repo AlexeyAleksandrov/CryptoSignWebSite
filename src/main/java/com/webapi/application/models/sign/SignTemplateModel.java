@@ -56,4 +56,17 @@ public class SignTemplateModel
 
         return createSignFormModel;
     }
+
+    public void setFromModel(SignTemplateModel model)
+    {
+        this.user = model.user;
+        this.templateName = model.templateName;
+        this.signOwner = model.signOwner;
+        this.signCertificate = model.signCertificate;
+        this.signDateStart = model.signDateStart;
+        this.signDateEnd = model.signDateEnd;
+        this.drawLogo = model.drawLogo;
+        this.checkTransitionToNewPage = model.checkTransitionToNewPage;
+        this.insertType = model.insertType;
+    }
 }

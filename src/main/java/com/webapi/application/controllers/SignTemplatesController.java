@@ -4,12 +4,16 @@ import com.webapi.application.models.sign.SignTemplateModel;
 import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.SignTemplatesRepository;
 import com.webapi.application.repositories.UsersRepository;
+import com.webapi.application.security.SecurityUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -73,13 +77,78 @@ public class SignTemplatesController
             templatesRepository.save(signTemplateModel);
             usersRepository.save(user);
 
-            return "sign/service/create";
+            return "redirect:/sign/create";
         }
     }
 
-    @GetMapping("/chose/{index}")
-    private String choseTemplate(@PathVariable("index") int index)
+    @GetMapping("/edit/{index}")
+    private String editPage(@PathVariable("index") int index, Authentication authentication, Model model)
     {
-        return null;
+        if(authentication == null)
+        {
+            return "redirect:/login";
+        }
+        else
+        {
+            String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+            User user = usersRepository.findByUsername(userName).orElse(null);
+            if(user == null)
+            {
+                return "redirect:/login";
+            }
+            else
+            {
+                List<SignTemplateModel> templatesList = user.getSignTemplates();    // получаем список шаблонов
+                if(index < 0 || index >= templatesList.size())  // если недопустимый индекс
+                {
+                    model.addAttribute("indexOutOfRange", true);    // ставим ошибку
+                }
+                else
+                {
+                    model.addAttribute("templateIndex", index);
+                    model.addAttribute("template", templatesList.get(index));   // задаём редактируемый шаблон
+                }
+                return "sign/templates/edit";
+            }
+        }
+    }
+
+    @PostMapping("/edit")
+    private String editTemplate(@ModelAttribute("template") SignTemplateModel signTemplateModel, @RequestParam(name = "templateIndex", defaultValue = "-1") int index, Authentication authentication)
+    {
+        if(authentication == null)
+        {
+            return "redirect:/login";
+        }
+        else
+        {
+            String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+            User user = usersRepository.findByUsername(userName).orElse(null);
+            if(user == null)
+            {
+                return "redirect:/login";
+            }
+            else
+            {
+                List<SignTemplateModel> templatesList = user.getSignTemplates();    // получаем список шаблонов
+                if(index < 0 || index >= templatesList.size())  // если недопустимый индекс
+                {
+                    return "redirect:/sign/create";
+                }
+                else
+                {
+                    signTemplateModel.setUser(user);    // указываем, какому пользователю принадлежит отредактированная подпись
+                    SignTemplateModel userTemplateModel = user.getSignTemplates().get(index);   // получаем текущий шаблон подписи
+                    userTemplateModel.setFromModel(signTemplateModel);  // записываем новые данные
+                    user.getSignTemplates().set(index, userTemplateModel);  // обновляем данные пользователю
+
+                    templatesRepository.save(userTemplateModel);
+                    usersRepository.save(user);
+
+                    return "redirect:/sign/create";
+                }
+            }
+        }
+
     }
 }

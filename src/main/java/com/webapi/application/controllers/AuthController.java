@@ -98,21 +98,21 @@ public class AuthController
                 user.setUsername(signUpUserForm.getUsername());
                 user.setPassword(passwordEncoder.encode(signUpUserForm.getPassword()));
 
-                SignTemplateModel signTemplateModel = new SignTemplateModel();
-                signTemplateModel.setTemplateName("Тестовый шаблон");
-                signTemplateModel.setSignOwner("Alexey");
-                signTemplateModel.setSignCertificate("1234567890");
-                signTemplateModel.setSignDateStart("15.07.2022");
-                signTemplateModel.setSignDateEnd("15.07.2023");
-                signTemplateModel.setDrawLogo(true);
-                signTemplateModel.setInsertType(0);
-                signTemplateModel.setCheckTransitionToNewPage(false);
-                signTemplateModel.setUser(user);
-
-                user.getSignTemplates().add(signTemplateModel); // добавляем подпись к пользователю
+//                SignTemplateModel signTemplateModel = new SignTemplateModel();
+//                signTemplateModel.setTemplateName("Тестовый шаблон");
+//                signTemplateModel.setSignOwner("Alexey");
+//                signTemplateModel.setSignCertificate("1234567890");
+//                signTemplateModel.setSignDateStart("15.07.2022");
+//                signTemplateModel.setSignDateEnd("15.07.2023");
+//                signTemplateModel.setDrawLogo(true);
+//                signTemplateModel.setInsertType(0);
+//                signTemplateModel.setCheckTransitionToNewPage(false);
+//                signTemplateModel.setUser(user);
+//
+//                user.getSignTemplates().add(signTemplateModel); // добавляем подпись к пользователю
 
                 usersRepository.save(user); // сохраняем пользователя
-                signTemplatesRepository.save(signTemplateModel);    // сохраняем шаблон
+//                signTemplatesRepository.save(signTemplateModel);    // сохраняем шаблон
 
                 try
                 {
