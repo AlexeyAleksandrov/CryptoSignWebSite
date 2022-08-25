@@ -12,14 +12,21 @@
 <div>
     <h1>CryptoSignService</h1>
     <h3>Авторизация</h3>
-    <form th:action="@{/login}" method="post" >
+    <form th:action="@{/login}" method="post" th:object="${form}">
         <p>
             <label for="username">Логин:</label>
-            <input type="text" name="username" id="username">
+            <input type="text" th:field="*{login}" id="username">
+            <div th:if="${UserNotFound}">
+                <a>Пользователь с таким логином не найден</a>
+            </div>
+
         </p>
         <p>
             <label for="password">Пароль:</label>
-            <input type="password" name="password" id="password">
+            <input type="password" th:field="*{password}" id="password">
+            <div th:if="${PasswordError}">
+                <a>Пароль не верный</a>
+            </div>
         </p>
         <div th:if="${param.error}">
             Пароль не верный, или пользователя с таким именем не существует

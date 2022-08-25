@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 {
-    String[] allowMatchers = {"/", "/signup", "/index", "/upload", "/download**"};
+    String[] allowMatchers = {"/", "/login", "/auth", "/signup", "/index", "/upload", "/download**"};
 
     // сервис для конвертации пользователей в UserDetails
     final SecurityUserDetailsService securityUserDetailsService;
@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .authenticated()
                 .and()
                 .formLogin()    // настраиваем страницу авторизации
-                .loginPage("/login").permitAll()    // разрешаем все запросы к странице авторизации
+                .loginPage("/authlogin").permitAll()    // разрешаем все запросы к странице авторизации
                 .defaultSuccessUrl("/") // по умолчанию перенаправляем на главную страницу
                 .and()
                 .logout()   // настраиваем выход из аккаунта

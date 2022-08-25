@@ -1,10 +1,12 @@
 package com.webapi.application.controllers;
 
+import com.webapi.application.models.auth.LoginForm;
 import com.webapi.application.models.auth.SignUpUserForm;
 import com.webapi.application.models.sign.SignTemplateModel;
 import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.SignTemplatesRepository;
 import com.webapi.application.repositories.UsersRepository;
+import com.webapi.application.security.SecurityConfiguration;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,7 +34,49 @@ public class AuthController
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model)
     {
+        model.addAttribute("form", new LoginForm());
         return "auth/login";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute("form") LoginForm loginForm, Model model, HttpServletRequest request)
+    {
+        if(loginForm.getLogin().length() == 0)  // если не указан логин
+        {
+            model.addAttribute("UserNotFound", true);
+            return "auth/login";
+        }
+        if(loginForm.getPassword().length() == 0)  // если не указан пароль
+        {
+            model.addAttribute("UserNotFound", true);
+            return "auth/login";
+        }
+
+        User user = usersRepository.findByUsername(loginForm.getLogin()).orElse(null);
+        if(user == null)    // если пользователя с таким именем нет
+        {
+            model.addAttribute("UserNotFound", true);
+            return "auth/login";
+        }
+
+        try
+        {
+            request.login(loginForm.getLogin(), loginForm.getPassword());  // выполняем принудительную авторизацию
+            return "redirect:/";
+        }
+        catch (ServletException e)  // если произошла ошибка
+        {
+            if(e.getMessage().equals("Неверные учетные данные пользователя"))
+            {
+                model.addAttribute("PasswordError", true);
+                return "auth/login";
+            }
+            else
+            {
+                e.printStackTrace();
+                return "auth/login";
+            }
+        }
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -98,25 +142,10 @@ public class AuthController
                 user.setUsername(signUpUserForm.getUsername());
                 user.setPassword(passwordEncoder.encode(signUpUserForm.getPassword()));
 
-//                SignTemplateModel signTemplateModel = new SignTemplateModel();
-//                signTemplateModel.setTemplateName("Тестовый шаблон");
-//                signTemplateModel.setSignOwner("Alexey");
-//                signTemplateModel.setSignCertificate("1234567890");
-//                signTemplateModel.setSignDateStart("15.07.2022");
-//                signTemplateModel.setSignDateEnd("15.07.2023");
-//                signTemplateModel.setDrawLogo(true);
-//                signTemplateModel.setInsertType(0);
-//                signTemplateModel.setCheckTransitionToNewPage(false);
-//                signTemplateModel.setUser(user);
-//
-//                user.getSignTemplates().add(signTemplateModel); // добавляем подпись к пользователю
-
                 usersRepository.save(user); // сохраняем пользователя
-//                signTemplatesRepository.save(signTemplateModel);    // сохраняем шаблон
 
                 try
                 {
-//                    request.logout();
                     request.login(signUpUserForm.getUsername(), signUpUserForm.getPassword());  // выполняем принудительную авторизацию
                     return "redirect:/";
                 }
@@ -125,8 +154,6 @@ public class AuthController
                     e.printStackTrace();
                     return "redirect:/login";
                 }
-
-//                return "redirect:/login";
             }
         }
     }
