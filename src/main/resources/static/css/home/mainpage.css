@@ -1,0 +1,120 @@
+body{
+    background-color: lightcyan;
+}
+
+.clear{
+    clear: left;
+}
+
+header{
+    margin-bottom: 50px;
+}
+
+.bottom_menu{
+    border: black solid 1px;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    border-spacing: 0;
+}
+
+.logo_box{
+    font-size: 10px;
+    font-family: Verdana, serif;
+    background-color: lightcyan;
+    color: cornflowerblue;
+}
+
+.header_item{
+    color: lightcyan;
+    background-color: steelblue;
+    text-align: center;
+    width: 70px;
+    position: relative;
+}
+
+.login_box {
+    color: lightcyan;
+    background-color: steelblue;
+    text-align: center;
+    position: relative;
+}
+
+.header_item:hover{
+    background-color: lightskyblue;
+}
+
+.header_link{
+    text-decoration: none;
+    position: relative;
+    color: lightcyan;
+}
+
+.header_link:hover{
+    display: block;
+    color: lightcyan;
+}
+
+.header_link.visited{
+    display: block;
+    color: lightcyan;
+}
+
+main{
+    float: left;
+}
+
+.button_create_sign{
+    border: dodgerblue solid 3px;
+    border-radius: 10px;
+    height: 50px;
+    width: 300px;
+    display: block;
+    background-color: lightskyblue;
+    /* центрируем div */
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    margin-top: 20px;
+}
+
+.button_create_sign:hover{
+    background-color: lightcyan;
+}
+
+.button_create_sign_link{
+    margin-top: 13px;
+    color: blue;
+    font-family: Verdana, Arial, serif;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    height: 100%;
+}
+
+.main_header{
+    color: darkblue;
+    font-family: Verdana, Arial, serif;
+    font-size: 20px;
+}
+
+.main_text{
+    color: darkslateblue;
+    font-family: Verdana, Arial, serif;
+    font-size: 16px;
+}
+
+.main_error_text{
+    color: red;
+    font-family: Verdana, Arial, serif;
+    font-size: 16px;
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+}

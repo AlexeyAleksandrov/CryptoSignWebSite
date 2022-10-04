@@ -4,43 +4,62 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--<link th:href="@{/css/auth/login.css}" rel="stylesheet">-->
+<!--<link href="/static/css/auth/login.css" rel="stylesheet">-->
+<link media="all" rel="stylesheet" th:href="@{/css/auth/login.css}" type="text/css"/>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div>
-    <h1>CryptoSignService</h1>
-    <h3>Авторизация</h3>
-    <form th:action="@{/login}" method="post" th:object="${form}">
-        <p>
-            <label for="username">Логин:</label>
-            <input type="text" th:field="*{login}" id="username">
+<header>
+    <table class="bottom_menu">
+        <tr>
+            <td class="logo_box">
+                <h1>CryptoSignService</h1>
+            </td>
+        </tr>
+    </table>
+</header>
+<main class="div_center">
+    <div>
+        <h3 class="main_header">Авторизация</h3>
+        <form th:action="@{/login}" method="post" th:object="${form}">
+            <p class="main_text">
+                <label for="username">Логин:</label>
+                <input type="text" th:field="*{login}" id="username">
             <div th:if="${UserNotFound}">
-                <a>Пользователь с таким логином не найден</a>
+                <a class="main_error_text">Пользователь с таким логином не найден</a>
             </div>
 
-        </p>
-        <p>
-            <label for="password">Пароль:</label>
-            <input type="password" th:field="*{password}" id="password">
+            </p>
+            <p class="main_text">
+                <label for="password">Пароль:</label>
+                <input type="password" th:field="*{password}" id="password">
             <div th:if="${PasswordError}">
-                <a>Пароль не верный</a>
+                <a class="main_error_text">Пароль не верный</a>
             </div>
-        </p>
-        <div th:if="${param.error}">
-            Пароль не верный, или пользователя с таким именем не существует
-        </div>
-        <p>
-            <button type="submit">Войти</button>
-        </p>
-        <p>
-            <a>Ещё нет аккаунта? <a th:href="@{/signup}">Зарегистрируйтесь</a></a>
-        </p>
-        <p>
-            <a>Вернуться на <a th:href="@{/}">главную</a></a>
-        </p>
-    </form>
-</div>
+            </p>
+            <div th:if="${param.error}" class="main_error_text">
+                Пароль не верный, или пользователя с таким именем не существует
+            </div>
+            <p class="main_text">
+                <button type="submit" class="submit">Войти</button>
+            </p>
+            <p class="main_text">
+                <a>Ещё нет аккаунта? <a th:href="@{/signup}">Зарегистрируйтесь</a></a>
+            </p>
+            <p class="main_text">
+                <a>Вернуться на <a th:href="@{/}">главную</a></a>
+            </p>
+        </form>
+    </div>
+</main>
+<div class="clear"></div>
+<footer>
+    <div>
+        <p>Автор проекта</p>
+    </div>
+</footer>
 </body>
 </html>

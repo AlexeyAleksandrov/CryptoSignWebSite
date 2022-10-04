@@ -4,26 +4,53 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--<link th:href="@{/css/home/mainpage.css}" rel="stylesheet">-->
+<!--<link href="/static/css/home/mainpage.css" rel="stylesheet">-->
+<link media="all" rel="stylesheet" th:href="@{/css/home/mainpage.css}" type="text/css"/>
 <head>
     <meta charset="UTF-8">
     <title>CryptoSignService</title>
 </head>
 <body>
-<h1>CryptoSignService</h1>
-<h3>Сервис для визуализации информации об электронной подписи в документе</h3>
-<div th:if="${login}">
-    <a>Вы вошли как <span th:text="${login}"></span>. Вы можете <a th:href="@{/logout}">выйти</a> из аккаунта.</a>
-</div>
-<p>
-    <a>Поддерживаемые форматы: Word, Excel, PDF – *.docx *.xlsx *.pdf</a>
-</p>
-<p>
-<div th:if="${notlogin}">
-    <a>Для использования сервиса <a th:href="@{/signup}">зарегистрируйтесь</a> или <a th:href="@{/login}">войдите</a> в свой аккаунт.</a>
-</div>
-</p>
-<p>
-    <a>Вы можете <a th:href="@{/sign/create}">подписать документ</a></a>
-</p>
+<header>
+    <table class="bottom_menu">
+        <tr>
+            <td class="logo_box">
+                <h1>CryptoSignService</h1>
+            </td>
+            <td th:if="${notlogin}" class="header_item">
+                <a th:href="@{/login}" class="header_link">Вход</a>
+            </td>
+            <td th:if="${notlogin}" class="header_item">
+                <a th:href="@{/signup}" class="header_link">Регистрация</a>
+            </td>
+            <td th:if="${login}" class="login_box">
+                <a><span th:text="${login}" class="header_link"></span></a>
+            </td>
+            <td th:if="${login}" class="header_item">
+                <a th:href="@{/logout}" class="header_link">Выйти</a>
+            </td>
+        </tr>
+    </table>
+</header>
+<div class="clear"></div>
+<main>
+    <h3 class="main_header">Сервис предназначен для визуализации информации об электронной подписи в документе</h3>
+    <p class="main_text">
+        <a>Поддерживаемые форматы: Word, Excel, PDF – *.docx *.xlsx *.pdf</a>
+    </p>
+    <p th:if="${notlogin}" class="main_error_text">Для использования сервиса необходима авторизация!</p>
+    <p>
+        <div th:if="${login}" class="button_create_sign">
+                <a th:href="@{/sign/create}" class="button_create_sign_link">Подписать документ</a>
+        </div>
+    </p>
+</main>
+<div class="clear"></div>
+<footer>
+    <div>
+        <p>Автор проекта</p>
+    </div>
+</footer>
 </body>
 </html>
