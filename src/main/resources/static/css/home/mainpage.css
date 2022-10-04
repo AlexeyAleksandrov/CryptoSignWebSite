@@ -31,8 +31,10 @@ header{
     color: lightcyan;
     background-color: steelblue;
     text-align: center;
-    width: 70px;
+    width: 100px;
     position: relative;
+    font-family: Verdana, Arial, serif;
+    font-size: 14px;
 }
 
 .login_box {

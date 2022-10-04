@@ -7,6 +7,7 @@
 <!--<link th:href="@{/css/auth/login.css}" rel="stylesheet">-->
 <!--<link href="/static/css/auth/login.css" rel="stylesheet">-->
 <link media="all" rel="stylesheet" th:href="@{/css/auth/login.css}" type="text/css"/>
+<link href="/static/css/auth/login.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -17,41 +18,75 @@
         <tr>
             <td class="logo_box">
                 <h1>CryptoSignService</h1>
+<!--                <div class="button_header_item">-->
+<!--                    <a href="/" class="button_header_item_link">Главная</a>-->
+<!--                </div>-->
             </td>
+            <td class="header_item">
+                <a th:href="@{/}" class="header_link">Главная</a>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/signup}" class="header_link">Регистрация</a>
+            </td>
+<!--            <td class="item_box">-->
+<!--                <div class="button_header_item">-->
+<!--                    <a href="/" class="button_header_item_link">Главная</a>-->
+<!--                </div>-->
+<!--                <div class="button_header_item">-->
+<!--                    <a href="/" class="button_header_item_link">Главная 2</a>-->
+<!--                </div>-->
+<!--            </td>-->
         </tr>
     </table>
 </header>
-<main class="div_center">
+<main class="div_center div_vcenter">
     <div>
-        <h3 class="main_header">Авторизация</h3>
         <form th:action="@{/login}" method="post" th:object="${form}">
-            <p class="main_text">
-                <label for="username">Логин:</label>
-                <input type="text" th:field="*{login}" id="username">
-            <div th:if="${UserNotFound}">
-                <a class="main_error_text">Пользователь с таким логином не найден</a>
-            </div>
-
-            </p>
-            <p class="main_text">
-                <label for="password">Пароль:</label>
-                <input type="password" th:field="*{password}" id="password">
-            <div th:if="${PasswordError}">
-                <a class="main_error_text">Пароль не верный</a>
-            </div>
-            </p>
-            <div th:if="${param.error}" class="main_error_text">
-                Пароль не верный, или пользователя с таким именем не существует
-            </div>
-            <p class="main_text">
-                <button type="submit" class="submit">Войти</button>
-            </p>
-            <p class="main_text">
-                <a>Ещё нет аккаунта? <a th:href="@{/signup}">Зарегистрируйтесь</a></a>
-            </p>
-            <p class="main_text">
-                <a>Вернуться на <a th:href="@{/}">главную</a></a>
-            </p>
+            <fieldset>
+                <legend><h3 class="main_header">Авторизация</h3></legend>
+                <table>
+<!--                    Логин -->
+                    <tr>
+                        <td>
+                            <label for="username" class="main_text">Логин:</label>
+                        </td>
+                        <td>
+                            <input type="text" th:field="*{login}" id="username" class="main_input_text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:if="${UserNotFound}" colspan="2">
+                            <a class="main_error_text">Пользователь с таким логином не найден</a>
+                        </td>
+                    </tr>
+    <!--                Пароль -->
+                    <tr>
+                        <td>
+                            <label for="password" class="main_text">Пароль:</label>
+                        </td>
+                        <td>
+                            <input type="password" th:field="*{password}" id="password" class="main_input_text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:if="${PasswordError}" colspan="2">
+                            <a class="main_error_text">Пароль не верный</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td th:if="${param.error}" colspan="2">
+                            <a class="main_error_text">Пароль не верный, или <br>пользователя с таким именем не существует</a>
+                        </td>
+                    </tr>
+    <!--                Кнопка Войти-->
+                    <tr>
+                        <td colspan="2">
+                            <br>
+                            <button type="submit" class="submit">Войти</button>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
         </form>
     </div>
 </main>
