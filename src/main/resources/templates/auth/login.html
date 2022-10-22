@@ -17,10 +17,7 @@
     <table class="bottom_menu">
         <tr>
             <td class="logo_box">
-                <h1>CryptoSignService</h1>
-<!--                <div class="button_header_item">-->
-<!--                    <a href="/" class="button_header_item_link">Главная</a>-->
-<!--                </div>-->
+                <h1><a href="/" class="logo_link">CryptoSignService</a></h1>
             </td>
             <td class="header_item">
                 <a th:href="@{/}" class="header_link">Главная</a>
@@ -28,14 +25,6 @@
             <td class="header_item">
                 <a th:href="@{/signup}" class="header_link">Регистрация</a>
             </td>
-<!--            <td class="item_box">-->
-<!--                <div class="button_header_item">-->
-<!--                    <a href="/" class="button_header_item_link">Главная</a>-->
-<!--                </div>-->
-<!--                <div class="button_header_item">-->
-<!--                    <a href="/" class="button_header_item_link">Главная 2</a>-->
-<!--                </div>-->
-<!--            </td>-->
         </tr>
     </table>
 </header>
@@ -86,6 +75,9 @@
                         </td>
                     </tr>
                 </table>
+                <p>
+                    <a>Ещё нет аккаунта? <a th:href="@{/signup}" class="logo_link">Зарегистрируйтесь</a></a>
+                </p>
             </fieldset>
         </form>
     </div>

@@ -30,6 +30,26 @@ header{
     /*border: black 3px solid;*/
 }
 
+.logo_link{
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+.logo_link:visited{
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+.logo_link:hover{
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+.logo_link:active{
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
 .item_box{
     /*border: black 3px solid;*/
 }

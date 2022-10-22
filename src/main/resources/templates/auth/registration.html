@@ -1,51 +1,136 @@
 <!DOCTYPE html>
+<!--<html lang="en">-->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--<link th:href="@{/css/auth/login.css}" rel="stylesheet">-->
+<!--<link href="/static/css/auth/login.css" rel="stylesheet">-->
+<link media="all" rel="stylesheet" th:href="@{/css/auth/registration.css}" type="text/css"/>
+<link href="/static/css/auth/registration.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<header>
+    <table class="bottom_menu">
+        <tr>
+            <td class="logo_box">
+                <h1><a href="/" class="logo_link">CryptoSignService</a></h1>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/}" class="header_link">Главная</a>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/login}" class="header_link">Авторизация</a>
+            </td>
+        </tr>
+    </table>
+</header>
+<main class="div_center div_vcenter">
 <div>
-    <h1>CryptoSignService</h1>
-    <h3>Регистрация пользователя</h3>
-    <form th:action="@{/signup}" th:object="${registerForm}" method="post" >
-        <p>
-            <label for="username">Логин:</label><br>
-            <input type="text" th:field="${registerForm.username}" id="username">
-            <div th:if="${loginError}">
-                <a th:text="${loginError}"></a>
-            </div>
-            <div th:if="${userExists}">
-                <a>Пользователь с данным именем уже существует!</a>
-            </div>
-        </p>
-        <p>
-            <label for="password_first">Пароль:</label><br>
-            <input type="password" th:field="${registerForm.password}" id="password_first">
-            <div th:if="${passwordError}">
-                <a th:text="${passwordError}"></a>
-            </div>
-        </p>
-        <p>
-            <label for="password_second">Повтор пароля:</label><br>
-            <input type="password" th:field="${registerForm.confirm_password}" id="password_second">
-            <div th:if="${passwordNotConfirm}">
-                <a>Пароли не совпадают</a>
-            </div>
-        </p>
-        <p>
-            <button type="submit">Регистрация</button>
-        </p>
-        <p>
-            <a>Уже есть аккаунт? <a th:href="@{/login}">Войдите</a></a>
-        </p>
-        <p>
-            <a>Вернуться на <a th:href="@{/}">главную</a></a>
-        </p>
-    </form>
+    <fieldset>
+        <legend><h3 class="main_header">Регистрация пользователя</h3></legend>
+<!--        <h1>CryptoSignService</h1>-->
+<!--        <h3>Регистрация пользователя</h3>-->
+        <form th:action="@{/signup}" th:object="${registerForm}" method="post" >
+            <table>
+<!--                Логин -->
+                <tr>
+                    <td>
+                        <label for="username">Логин:</label>
+                    </td>
+                    <td>
+                        <input type="text" th:field="${registerForm.username}" id="username">
+                    </td>
+                </tr>
+                <tr>
+                    <td th:if="${loginError}" colspan="2">
+                        <a class="main_error_text" th:text="${loginError}"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:if="${userExists}" colspan="2">
+                        <a class="main_error_text">Пользователь с данным именем уже существует!</a>
+                    </td>
+                </tr>
+<!--                Пароль -->
+                <tr>
+                    <td>
+                        <label for="password_first">Пароль:</label>
+                    </td>
+                    <td>
+                        <input type="password" th:field="${registerForm.password}" id="password_first">
+                    </td>
+                </tr>
+                <tr>
+                    <td th:if="${passwordError}" colspan="2">
+                        <a class="main_error_text" th:text="${loginError}"></a>
+                    </td>
+                </tr>
+<!--                Повтор пароля -->
+                <tr>
+                    <td>
+                        <label for="password_second">Повтор пароля:</label>
+                    </td>
+                    <td>
+                        <input type="password" th:field="${registerForm.confirm_password}" id="password_second">
+                    </td>
+                </tr>
+                <tr>
+                    <td th:if="${passwordNotConfirm}" colspan="2">
+                        <a class="main_error_text">Пароли не совпадают</a>
+                    </td>
+                </tr>
+<!--                Кнопка регистрация -->
+                <tr>
+                    <td colspan="2">
+                        <br>
+                        <button type="submit" class="submit">Регистрация</button>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <a>Уже есть аккаунт? <a th:href="@{/login}" class="logo_link">Войдите</a></a>
+            </p>
+
+<!--            <p>-->
+<!--                <label for="username">Логин:</label><br>-->
+<!--                <input type="text" th:field="${registerForm.username}" id="username">-->
+<!--                <div th:if="${loginError}">-->
+<!--                    <a th:text="${loginError}"></a>-->
+<!--                </div>-->
+<!--                <div th:if="${userExists}">-->
+<!--                    <a>Пользователь с данным именем уже существует!</a>-->
+<!--                </div>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <label for="password_first">Пароль:</label><br>-->
+<!--                <input type="password" th:field="${registerForm.password}" id="password_first">-->
+<!--                <div th:if="${passwordError}">-->
+<!--                    <a th:text="${passwordError}"></a>-->
+<!--                </div>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <label for="password_second">Повтор пароля:</label><br>-->
+<!--                <input type="password" th:field="${registerForm.confirm_password}" id="password_second">-->
+<!--                <div th:if="${passwordNotConfirm}">-->
+<!--                    <a>Пароли не совпадают</a>-->
+<!--                </div>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <button type="submit">Регистрация</button>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <a>Уже есть аккаунт? <a th:href="@{/login}" class="logo_link">Войдите</a></a>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--                <a>Вернуться на <a th:href="@{/}">главную</a></a>-->
+<!--            </p>-->
+        </form>
+    </fieldset>
 </div>
+</main>
 </body>
 </html>

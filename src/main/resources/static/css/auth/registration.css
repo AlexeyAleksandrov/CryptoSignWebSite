@@ -10,6 +10,7 @@ header{
     margin-bottom: 50px;
 }
 
+
 .bottom_menu{
     border: black solid 1px;
     position: fixed;
@@ -25,6 +26,8 @@ header{
     font-family: Verdana, serif;
     background-color: lightcyan;
     color: cornflowerblue;
+    /*float: left;*/
+    /*border: black 3px solid;*/
 }
 
 .logo_link{
@@ -47,6 +50,41 @@ header{
     color: cornflowerblue;
 }
 
+.item_box{
+    /*border: black 3px solid;*/
+}
+
+.button_header_item{
+    /*border: dodgerblue solid 3px;*/
+    /*border-radius: 10px;*/
+    height: 50px;
+    width: 100px;
+    display: block;
+    background-color: steelblue;
+    float: right;
+    /* центрируем div */
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*margin-right: -50%;*/
+    /*transform: translate(-50%, -50%);*/
+    /*margin-top: 20px;*/
+}
+
+.button_header_item:hover{
+    background-color: lightcyan;
+}
+
+.button_header_item_link{
+    margin-top: 13px;
+    color: lightcyan;
+    font-family: Verdana, Arial, serif;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    height: 50px;
+}
+
 .header_item{
     color: lightcyan;
     background-color: steelblue;
@@ -57,13 +95,6 @@ header{
     font-size: 14px;
 }
 
-.login_box {
-    color: lightcyan;
-    background-color: steelblue;
-    text-align: center;
-    position: relative;
-}
-
 .header_item:hover{
     background-color: lightskyblue;
 }
@@ -71,6 +102,7 @@ header{
 .header_link{
     text-decoration: none;
     position: relative;
+    display: block;
     color: lightcyan;
 }
 
@@ -88,34 +120,16 @@ main{
     float: left;
 }
 
-.button_create_sign{
-    border: dodgerblue solid 3px;
-    border-radius: 10px;
-    height: 50px;
-    width: 300px;
-    display: block;
-    background-color: lightskyblue;
-    /* центрируем div */
+.div_center{
     position: absolute;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    margin-top: 20px;
+    /*margin-top: 180px;*/
 }
 
-.button_create_sign:hover{
-    background-color: lightcyan;
-}
-
-.button_create_sign_link{
-    margin-top: 13px;
-    color: blue;
-    font-family: Verdana, Arial, serif;
-    text-decoration: none;
-    font-size: 18px;
-    display: block;
-    text-align: center;
-    height: 100%;
+.div_vcenter{
+    top: 30%;
 }
 
 .main_header{
@@ -133,8 +147,34 @@ main{
 .main_error_text{
     color: red;
     font-family: Verdana, Arial, serif;
-    font-size: 16px;
+    font-size: 13px;
 }
+
+.main_input_text{
+    color: black;
+    font-family: Verdana, Arial, serif;
+    font-size: 13px;
+}
+
+.submit{
+    display: block;
+    width: 295px;
+    height: 40px;
+    color: darkblue;
+    background-color: lightskyblue;
+    border-radius: 15px;
+    font-family: Verdana, Arial, serif;
+    font-size: 14px;
+}
+
+.submit:hover{
+    color: darkblue;
+    background-color: lightcyan;
+}
+
+/*fieldset{*/
+/*    background-color: skyblue;*/
+/*}*/
 
 footer{
     position: absolute;
