@@ -4,9 +4,12 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<!--<link th:href="@{/css/home/mainpage.css}" rel="stylesheet">-->
-<!--<link href="/static/css/home/mainpage.css" rel="stylesheet">-->
-<link media="all" rel="stylesheet" th:href="@{/css/home/mainpage.css}" type="text/css"/>
+<!--<link th:href="@{/css/home/createsign_button.css}" rel="stylesheet">-->
+<!--<link href="/static/css/home/createsign_button.css" rel="stylesheet">-->
+<link media="all" rel="stylesheet" th:href="@{/css/index/index.css}" type="text/css"/>
+<link media="all" rel="stylesheet" th:href="@{/css/home/createsign_button.css}" type="text/css"/>
+<link href="/static/css/index/index.css" rel="stylesheet">
+<link href="/static/css/home/createsign_button.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>CryptoSignService</title>
@@ -41,8 +44,8 @@
     </p>
     <p th:if="${notlogin}" class="main_error_text">Для использования сервиса необходима авторизация!</p>
     <p>
-        <div th:if="${login}" class="button_create_sign">
-            <a th:href="@{/sign/create}" class="button_create_sign_link">Подписать документ</a>
+        <div th:if="${login}" class="button_create_sign button_create_sign_div div_center">
+            <a th:href="@{/sign/create}" class="button_create_sign_link button_create_sign_link_text">Подписать документ</a>
         </div>
     </p>
 </main>

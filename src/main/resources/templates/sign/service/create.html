@@ -6,73 +6,127 @@
 <head>
     <meta charset="UTF-8">
     <title>CryptoSignService</title>
+    <link media="all" rel="stylesheet" th:href="@{/css/index/index.css}" type="text/css"/>
+    <link media="all" rel="stylesheet" th:href="@{/css/home/createsign_button.css}" type="text/css"/>
+    <link media="all" rel="stylesheet" th:href="@{/css/sign/service/create.css}" type="text/css"/>
+    <link href="/static/css/index/index.css" rel="stylesheet">
+    <link href="/static/css/home/createsign_button.css" rel="stylesheet">
+    <link href="/static/css/sign/service/create.css" rel="stylesheet">
 </head>
 <body>
-<h1>CryptoSignService</h1>
-<h3>Сервис для визуализации информации об электронной подписи в документе</h3>
-<h2>Подпись документа</h2>
-<form method="POST" enctype="multipart/form-data" th:action="@{/sign/upload}" th:object="${signModel}">
-    <label>Документ: <input type="file" th:field="*{file}"></label><br>
-    <label>Владелец: <input type="text" th:field="*{signOwner}"> </label><br>
-    <label>Сертификат: <input type="text" th:field="*{signCertificate}"></label><br>
-    <label>Действителен с <input type="date" th:field="*{signDateStart}"> до <input type="date" th:field="*{signDateEnd}"></label><br>
-    <label><input type="checkbox" th:field="*{drawLogo}" checked="checked"> Рисовать герб</label><br>
-    <label><input type="checkbox" th:field="*{checkTransitionToNewPage}"> Игнорировать переход на новую страницу</label><br>
-    <p><select size="1" th:field="*{insertType}">
-        <option disabled th:value="-1">Тип вставки</option>
-        <option th:value="0">В конец документа</option>
-        <option th:value="2">По тэгу</option>
-    </select></p>
-    <p>
-        <label for="submit">Подпись документа:</label>
-    </p>
-    <p>
-        <input type="submit" value="Подписать" id="submit">
-    </p>
-    <p>
-        <a>Вы можете вернуться на <a th:href="@{/}">главную</a></a>
-    </p>
-</form>
-
-<div th:if="${signTemplateModels.size() > 0}">
-    <table border="1">
+<header>
+    <table class="bottom_menu">
         <tr>
-            <th>Номер</th>
-            <th>Название</th>
-            <th>Владелец</th>
-            <th>Сертификат</th>
-            <th>Дата начала</th>
-            <th>Дата окончания</th>
-            <th>Рисовать герб</th>
-            <th>Переход на новую страницу</th>
-            <th>Тип вставки</th>
-            <th>Редактировать</th>
-            <th>Выбрать</th>
-        </tr>
-        <tr th:each="template: ${signTemplateModels}">
-            <td th:text="${templateStat.index + 1}"></td>
-            <td th:text="${template.templateName}"></td>
-            <td th:text="${template.signOwner}"></td>
-            <td th:text="${template.signCertificate}"></td>
-            <td th:text="${template.signDateStart}"></td>
-            <td th:text="${template.signDateEnd}"></td>
-            <td th:text="${template.drawLogo}"></td>
-            <td th:text="${template.checkTransitionToNewPage}"></td>
-            <td th:text="${template.insertType}"></td>
-            <td><a th:text="Редактировать" th:href="@{'/templates/edit/' + ${templateStat.index}}"></a></td>
-            <td><a th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></td>
+            <td class="logo_box">
+                <h1><a href="/" class="logo_link">CryptoSignService</a></h1>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/}" class="header_link">Главная</a>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/signup}" class="header_link">Регистрация</a>
+            </td>
         </tr>
     </table>
-    <p>
-        <a>При необходимости, вы можете <a th:href="@{/templates/delete}">удалить</a> некоторые шаблоны</a>
-    </p>
-</div>
+</header>
+<main class="main_center">
+    <div>
+        <fieldset>
+            <legend><h3 class="main_header">Подпись документа</h3></legend>
+            <form method="POST" enctype="multipart/form-data" th:action="@{/sign/upload}" th:object="${signModel}">
+                <table class="main_text">
+                    <tr>
+                        <td>Документ: </td>
+                        <td colspan="3"><input type="file" th:field="*{file}"></td>
+                    </tr>
+                    <tr>
+                        <td>Владелец: </td>
+                        <td colspan="3"><input type="text" th:field="*{signOwner}"></td>
+                    </tr>
+                    <tr>
+                        <td>Сертификат: </td>
+                        <td colspan="3"><input type="text" th:field="*{signCertificate}"></td>
+                    </tr>
+                    <tr>
+                        <td>Действителен с </td>
+                        <td><input type="date" th:field="*{signDateStart}" ></td>
+                        <td> до </td>
+                        <td><input type="date" th:field="*{signDateEnd}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><input type="checkbox" th:field="*{drawLogo}" checked="checked"> Рисовать герб</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><input type="checkbox" th:field="*{checkTransitionToNewPage}"> Игнорировать переход на новую страницу</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <select size="1" th:field="*{insertType}">
+                                <option disabled th:value="-1">Тип вставки</option>
+                                <option th:value="0">В конец документа</option>
+                                <option th:value="2">По тэгу</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><label for="submit">Подпись документа:</label></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="button_create_sign_table_data"><input type="submit" value="Подписать" id="submit" class="button_create_sign button_create_sign_link_text"></td>
+                    </tr>
 
-<div>
-    <p>
-        <a>Вы можете <a th:href="@{/templates/create}">создать шаблон подписи</a></a>
-    </p>
-</div>
+<!--                    <tr>-->
+<!--                        <td colspan="4">-->
+<!--                            -->
+<!--                        </td>-->
+<!--                    </tr>-->
+                </table>
+            </form>
+        </fieldset>
+<!--        <p class="clear"></p>-->
+        <fieldset>
+            <legend><h3 class="main_header">Шаблоны подписи</h3></legend>
+            <div th:if="${signTemplateModels.size() > 0}">
+                <table border="1">
+                    <tr>
+                        <th>Номер</th>
+                        <th>Название</th>
+                        <th>Владелец</th>
+                        <th>Сертификат</th>
+                        <th>Дата начала</th>
+                        <th>Дата окончания</th>
+                        <th>Рисовать герб</th>
+                        <th>Переход на новую страницу</th>
+                        <th>Тип вставки</th>
+                        <th>Редактировать</th>
+                        <th>Выбрать</th>
+                    </tr>
+                    <tr th:each="template: ${signTemplateModels}">
+                        <td th:text="${templateStat.index + 1}"></td>
+                        <td th:text="${template.templateName}"></td>
+                        <td th:text="${template.signOwner}"></td>
+                        <td th:text="${template.signCertificate}"></td>
+                        <td th:text="${template.signDateStart}"></td>
+                        <td th:text="${template.signDateEnd}"></td>
+                        <td th:text="${template.drawLogo}"></td>
+                        <td th:text="${template.checkTransitionToNewPage}"></td>
+                        <td th:text="${template.insertType}"></td>
+                        <td><a th:text="Редактировать" th:href="@{'/templates/edit/' + ${templateStat.index}}"></a></td>
+                        <td><a th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></td>
+                    </tr>
+                </table>
+                <p>
+                    <a>При необходимости, вы можете <a th:href="@{/templates/delete}">удалить</a> некоторые шаблоны</a>
+                </p>
+            </div>
 
+            <div>
+                <p>
+                    <a>Вы можете <a th:href="@{/templates/create}">создать шаблон подписи</a></a>
+                </p>
+            </div>
+        </fieldset>
+    </div>
+</main>
 </body>
 </html>

@@ -118,6 +118,8 @@ header{
 
 main{
     float: left;
+    /*position: absolute;*/
+    /*top: 50px;*/
 }
 
 .div_center{
@@ -129,7 +131,7 @@ main{
 }
 
 .div_vcenter{
-    top: 30%;
+    top: 35%;
 }
 
 .main_header{
@@ -158,7 +160,7 @@ main{
 
 .submit{
     display: block;
-    width: 295px;
+    width: 275px;
     height: 40px;
     color: darkblue;
     background-color: lightskyblue;

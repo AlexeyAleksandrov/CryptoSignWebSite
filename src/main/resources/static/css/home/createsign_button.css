@@ -1,0 +1,40 @@
+.button_create_sign{
+    border: dodgerblue solid 3px;
+    border-radius: 10px;
+    height: 50px;
+    width: 300px;
+    display: block;
+    background-color: lightskyblue;
+    /*!* центрируем div *!*/
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*margin-right: -50%;*/
+    /*transform: translate(-50%, -50%);*/
+}
+
+.button_create_sign_div{
+    margin-top: 20px;
+}
+
+.button_create_sign:hover{
+    background-color: lightcyan;
+}
+
+.button_create_sign_link{
+    margin-top: 13px;
+    display: block;
+    text-align: center;
+    height: 100%;
+}
+
+.button_create_sign_link_text{
+    color: blue;
+    font-family: Verdana, Arial, serif;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.button_create_sign_table_data{
+    height: 80px;
+    /*background-color: red;*/
+}
