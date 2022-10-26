@@ -7,7 +7,9 @@
 <!--<link th:href="@{/css/auth/login.css}" rel="stylesheet">-->
 <!--<link href="/static/css/auth/login.css" rel="stylesheet">-->
 <link media="all" rel="stylesheet" th:href="@{/css/index/index.css}" type="text/css"/>
+<link media="all" rel="stylesheet" th:href="@{/css/auth/auth.css}" type="text/css"/>
 <link href="/static/css/index/index.css" rel="stylesheet">
+<link href="/static/css/auth/auth.css" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -47,7 +49,7 @@
                 </tr>
                 <tr>
                     <td th:if="${loginError}" colspan="2">
-                        <a class="main_error_text" th:text="${loginError}"></a>
+                        <a class="auth_error_text" th:text="${loginError}"></a>
                     </td>
                 </tr>
                 <tr>
