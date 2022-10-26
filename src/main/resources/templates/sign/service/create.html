@@ -29,10 +29,11 @@
         </tr>
     </table>
 </header>
-<main class="main_center">
-    <div>
-        <table class="t_center">
+<main class="">
+    <div class="div_vcenter">
+        <table>
             <tr>
+                <td width="30%"><p></p></td>
                 <td>
                     <fieldset>
                         <legend><h3 class="main_header">Подпись документа</h3></legend>
@@ -72,10 +73,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4"><label for="submit">Подпись документа:</label></td>
+                                    <td colspan="4">
+                                        <label for="submit">Подпись документа:</label>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="button_create_sign_table_data"><input type="submit" value="Подписать" id="submit" class="button_create_sign button_create_sign_link_text"></td>
+<!--                                    <td colspan="2" width="5%"><p></p></td>-->
+                                    <td colspan="4" class="button_create_sign_table_data" align="center">
+                                        <input type="submit" value="Подписать" id="submit" class="button_create_sign button_create_sign_link_text">
+                                    </td>
+<!--                                    <td width="20%"><p></p></td>-->
                                 </tr>
 
                                 <!--                    <tr>-->
@@ -87,39 +94,121 @@
                         </form>
                     </fieldset>
                 </td>
+                <td width="30%"><p></p></td>
             </tr>
             <tr>
-                <td>
+                <td colspan="3">
                     <fieldset>
                         <legend><h3 class="main_header">Шаблоны подписи</h3></legend>
                         <div th:if="${signTemplateModels.size() > 0}">
-                            <table border="1">
+                            <table class="templates_table main_text" id="templates_table">
                                 <tr>
-                                    <th>Номер</th>
-                                    <th>Название</th>
-                                    <th>Владелец</th>
-                                    <th>Сертификат</th>
-                                    <th>Дата начала</th>
-                                    <th>Дата окончания</th>
-                                    <th>Рисовать герб</th>
-                                    <th>Переход на новую страницу</th>
-                                    <th>Тип вставки</th>
-                                    <th>Редактировать</th>
-                                    <th>Выбрать</th>
+                                    <th class="templates_table_data templates_table_header">Номер</th>
+                                    <th class="templates_table_data templates_table_header">Название</th>
+                                    <th class="templates_table_data templates_table_header">Владелец</th>
+                                    <th class="templates_table_data templates_table_header">Сертификат</th>
+                                    <th class="templates_table_data templates_table_header">Дата начала</th>
+                                    <th class="templates_table_data templates_table_header">Дата окончания</th>
+                                    <th class="templates_table_data templates_table_header">Рисовать герб</th>
+                                    <th class="templates_table_data templates_table_header">Переход на новую страницу</th>
+                                    <th class="templates_table_data templates_table_header">Тип вставки</th>
+                                    <th class="templates_table_data templates_table_header">Редактировать</th>
+                                    <th class="templates_table_data templates_table_header">Выбрать</th>
                                 </tr>
-                                <tr th:each="template: ${signTemplateModels}">
-                                    <td th:text="${templateStat.index + 1}"></td>
-                                    <td th:text="${template.templateName}"></td>
-                                    <td th:text="${template.signOwner}"></td>
-                                    <td th:text="${template.signCertificate}"></td>
-                                    <td th:text="${template.signDateStart}"></td>
-                                    <td th:text="${template.signDateEnd}"></td>
-                                    <td th:text="${template.drawLogo}"></td>
-                                    <td th:text="${template.checkTransitionToNewPage}"></td>
-                                    <td th:text="${template.insertType}"></td>
-                                    <td><a th:text="Редактировать" th:href="@{'/templates/edit/' + ${templateStat.index}}"></a></td>
-                                    <td><a th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></td>
+                                <tr class="templates_table_row" th:each="template: ${signTemplateModels}">
+                                    <td class="templates_table_data" th:text="${templateStat.index + 1}"></td>
+                                    <td class="templates_table_data" th:text="${template.templateName}"></td>
+                                    <td class="templates_table_data" th:text="${template.signOwner}"></td>
+                                    <td class="templates_table_data" th:text="${template.signCertificate}"></td>
+                                    <td class="templates_table_data" th:text="${template.signDateStart}"></td>
+                                    <td class="templates_table_data" th:text="${template.signDateEnd}"></td>
+                                    <td class="templates_table_data" th:text="${template.drawLogo}"></td>
+                                    <td class="templates_table_data" th:text="${template.checkTransitionToNewPage}"></td>
+                                    <td class="templates_table_data" th:text="${template.insertType}"></td>
+                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Редактировать" th:href="@{'/templates/edit/' + ${templateStat.index}}"></a></div></td>
+                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></div></td>
                                 </tr>
+
+<!--                                ================ ДЕМО ====================-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" href="/templates/edit/0">Редактировать</a></div></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><a href="/templates/edit/0">Редактировать</a></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><a href="/templates/edit/0">Редактировать</a></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><a href="/templates/edit/0">Редактировать</a></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><a href="/templates/edit/0">Редактировать</a></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+<!--                                <tr class="templates_table_row">-->
+<!--                                    <td class="templates_table_data">1</td>-->
+<!--                                    <td class="templates_table_data">77Шаблон123</td>-->
+<!--                                    <td class="templates_table_data">Alexey1234565</td>-->
+<!--                                    <td class="templates_table_data">658tr438rt834tf834ftg43f</td>-->
+<!--                                    <td class="templates_table_data">111111-11-11</td>-->
+<!--                                    <td class="templates_table_data">222222-02-22</td>-->
+<!--                                    <td class="templates_table_data">true</td>-->
+<!--                                    <td class="templates_table_data">false</td>-->
+<!--                                    <td class="templates_table_data">0</td>-->
+<!--                                    <td class="templates_table_data"><a href="/templates/edit/0">Редактировать</a></td>-->
+<!--                                    <td class="templates_table_data"><a href="/sign/create?index=0">Выбрать</a></td>-->
+<!--                                </tr>-->
+
                             </table>
                             <p>
                                 <a>При необходимости, вы можете <a th:href="@{/templates/delete}">удалить</a> некоторые шаблоны</a>

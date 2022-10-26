@@ -79,6 +79,7 @@ public class SignServiceController
         return "Вы можете загружать файл с использованием того же URL.";
     }
 
+    // TODO: Сделать загрузку не одного, а несколько файлов
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
     String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel)
@@ -86,7 +87,7 @@ public class SignServiceController
         if(createSignFormModel == null)
         {
             return "redirect:/sign/create";
-        }
+        }   // TODO: Сделать стилизацию input с файлами, шаблон -> https://snipp.ru/html-css/input-file-style
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         String currentDir = System.getProperty("user.dir");
         String fileName = currentDir + "/uploadedfiles/" + createSignFormModel.getFile().getOriginalFilename();   // получаем оригинальное название файла, который был загружен

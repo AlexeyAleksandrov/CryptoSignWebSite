@@ -29,7 +29,13 @@ public class AuthController
 {
     private final UsersRepository usersRepository;  // репозиторий для работы с пользователями
     private final PasswordEncoder passwordEncoder;  // кодировщик паролей
-    private final SignTemplatesRepository signTemplatesRepository;  // репозиторий для работы с шаблонами подписей
+
+    // это просто для того, чтобы Spring Security перебрасывал авторизацию на кастомный адрес, где происходит авторизация
+    @RequestMapping(value = "/authlogin", method = RequestMethod.GET)
+    public String authlogin()
+    {
+        return "redirect:/login";
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model)
