@@ -48,13 +48,19 @@ fieldset{
 }
 
 .templates_button_div:hover{
-    background-color: lightcyan;
+    background-color: dodgerblue;
 }
 
 .templates_button_a{
     text-decoration: none;
     color: blue;
     position: relative;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+
+    font-family: Verdana, Arial, serif;
+    font-size: 14px;
 }
 
 .templates_button_a:active{

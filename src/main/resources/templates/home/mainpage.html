@@ -27,7 +27,7 @@
             <td th:if="${notlogin}" class="header_item">
                 <a th:href="@{/signup}" class="header_link">Регистрация</a>
             </td>
-            <td th:if="${login}" class="login_box">
+            <td th:if="${login}" class="header_item">
                 <a><span th:text="${login}" class="header_link"></span></a>
             </td>
             <td th:if="${login}" class="header_item">
