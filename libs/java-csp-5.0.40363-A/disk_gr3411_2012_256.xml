@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<CProIntegrity>
+	<catalog name="[DiskHash]">		<entry name="._samples.jar">
+			<Algid>00008021</Algid>
+			<Path>./samples.jar</Path>
+			<Tag>6152C88797D45C1FC48571A982F4B5D7CDA1095525DB78719AA5D185F8A4E213</Tag>
+		</entry>
+		<entry name="._javadoc_CAdES-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/CAdES-javadoc.jar</Path>
+			<Tag>C9A92BD74963DCA4964829324EA7A8A0B3C2C03ED8F95B2BCBFA14DB89B5600E</Tag>
+		</entry>
+		<entry name="._javadoc_Rutoken-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/Rutoken-javadoc.jar</Path>
+			<Tag>4FE2E6B620B10EA20E2C37C0E413337B0F22B342804E48272E1F1016B5B20510</Tag>
+		</entry>
+		<entry name="._javadoc_JCPRevCheck-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCPRevCheck-javadoc.jar</Path>
+			<Tag>3FF0DFF61A30D0148D44E35A7A2F59EAA065AD4A3A385D52E101D9B0ADD9A5C8</Tag>
+		</entry>
+		<entry name="._javadoc_cpSSL-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/cpSSL-javadoc.jar</Path>
+			<Tag>8917A747D5343D37D02CE5B69B10314D2CCF9F7A45F07ACA95F0358DB0BD5757</Tag>
+		</entry>
+		<entry name="._javadoc_XAdES-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/XAdES-javadoc.jar</Path>
+			<Tag>6FACC5CFD6FB7366CED11EC78756E20FC1F13A8A32941D8CA583B335D1EFC0D3</Tag>
+		</entry>
+		<entry name="._javadoc_XMLDSigRI-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/XMLDSigRI-javadoc.jar</Path>
+			<Tag>B6E2B06099EF58FC0424AB7313B927FAD3FF8A691DD247B64C6C29CD43C6CA6C</Tag>
+		</entry>
+		<entry name="._javadoc_J6Oscar-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/J6Oscar-javadoc.jar</Path>
+			<Tag>E382AA772B9CE4D030FD0D24331B7D0651AFAF40EB07D24C53E0EB1FF762BAB3</Tag>
+		</entry>
+		<entry name="._javadoc_J6CF-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/J6CF-javadoc.jar</Path>
+			<Tag>E22249F63CC76ABFE20210B78EA6782A3497A4A7F44580975F662D1E5AA3560B</Tag>
+		</entry>
+		<entry name="._javadoc_JCSP-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCSP-javadoc.jar</Path>
+			<Tag>76CFC65731BBD58C726EDA8B974766EA04CD352524A2CD0D022D1C5339256730</Tag>
+		</entry>
+		<entry name="._javadoc_JCP-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCP-javadoc.jar</Path>
+			<Tag>C75B906FEF496BDB77967FD9E584A9D9773433D1B0B7815B262A47E38C02D438</Tag>
+		</entry>
+		<entry name="._javadoc_JCryptoP-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCryptoP-javadoc.jar</Path>
+			<Tag>EEC82E706B029A76CFF20D6DEBF0786BE582D9136780BDA91CBA21402C527D14</Tag>
+		</entry>
+		<entry name="._javadoc_OCF-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/OCF-javadoc.jar</Path>
+			<Tag>6D823200AC4CE84E73E3E60B0BB3053768BDE7DA0DF8EA0A6B67D09E788ADFA5</Tag>
+		</entry>
+		<entry name="._javadoc_JCPxml-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCPxml-javadoc.jar</Path>
+			<Tag>93CB318F271C222B1A1EF668593D7C12E86FF5917928FFDA42DB18ECF73D6A0C</Tag>
+		</entry>
+		<entry name="._javadoc_JCPRequest-javadoc.jar">
+			<Algid>00008021</Algid>
+			<Path>./javadoc/JCPRequest-javadoc.jar</Path>
+			<Tag>E0F9EEB02DEB248C38DF13144A968DAE573B86EF453199016F69CDACCAA573A6</Tag>
+		</entry>
+		<entry name="._cpverify.exe">
+			<Algid>00008021</Algid>
+			<Path>./cpverify.exe</Path>
+			<Tag>30AA2260226F3DD3AD6926DDAA3D1C153FE90E0EBDE9FC1078D6DA8DBD9F88BC</Tag>
+		</entry>
+		<entry name="._J6Oscar.jar">
+			<Algid>00008021</Algid>
+			<Path>./J6Oscar.jar</Path>
+			<Tag>058366E3DDD8B95A3ACFB1A4E73758CBF65D99480BD868F8A7AB35AE1C34269D</Tag>
+		</entry>
+		<entry name="._JCPRevTools.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCPRevTools.jar</Path>
+			<Tag>F5CE8DC3E4FFD8AB7A07940B27A9A759039334F04BCCA4C39AF34D10B432592C</Tag>
+		</entry>
+		<entry name="._JCPRevCheck.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCPRevCheck.jar</Path>
+			<Tag>E468347C2600C030966C219D057A87A1F5492690D2D44B4763C32217F086F1D1</Tag>
+		</entry>
+		<entry name="._ControlPane.bat">
+			<Algid>00008021</Algid>
+			<Path>./ControlPane.bat</Path>
+			<Tag>72FD67461BAF32AA34297780394DBF9AF635466657B3A90ED34BEF7AE67955C7</Tag>
+		</entry>
+		<entry name="._samples-sources.jar">
+			<Algid>00008021</Algid>
+			<Path>./samples-sources.jar</Path>
+			<Tag>6474EBAE97205A9801BFF1D765BEB5D9163B8AEC7A1E15F1EBE36A9157B40528</Tag>
+		</entry>
+				<entry name="._JCP.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCP.jar</Path>
+			<Tag>70D94F3195DD60CACB183EC61686C21063DBC951913072B8F8328EEE5CE173A8</Tag>
+		</entry>
+		<entry name="._configure.sh">
+			<Algid>00008021</Algid>
+			<Path>./configure.sh</Path>
+			<Tag>9A6A2BE76E97CD65C1EE76CA846AB5AB20D99F30E88AF6284626D0514A917C7E</Tag>
+		</entry>
+		<entry name="._JCSP.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCSP.jar</Path>
+			<Tag>5DD4F8CBB8EBCD8CF68D92311A8A66E5E12B32984FEF090C413440A9CA48105E</Tag>
+		</entry>
+		<entry name="._forms_rt.jar">
+			<Algid>00008021</Algid>
+			<Path>./forms_rt.jar</Path>
+			<Tag>D274E2EBA52F4B99793CA2BCBD347F7C05C5954513C7C705CD5A9A2D8E7BADB8</Tag>
+		</entry>
+		<entry name="._J6CF.jar">
+			<Algid>00008021</Algid>
+			<Path>./J6CF.jar</Path>
+			<Tag>7F0BA718D81B48F509496F3D36E047692E2F8784B03CC88965820DA461D6A656</Tag>
+		</entry>
+		<entry name="._asn1rt.jar">
+			<Algid>00008021</Algid>
+			<Path>./asn1rt.jar</Path>
+			<Tag>CCEA08A2C5AA205275E3BEC11285A93A9CF39D5F4199AE12C9FE07D7DCF5291A</Tag>
+		</entry>
+		<entry name="._Rutoken.jar">
+			<Algid>00008021</Algid>
+			<Path>./Rutoken.jar</Path>
+			<Tag>E103BBD62A3C4064CBB3F99C5D372D25CDE12A79D68E4F36871F98E4C65C723F</Tag>
+		</entry>
+		<entry name="._ControlPane.sh">
+			<Algid>00008021</Algid>
+			<Path>./ControlPane.sh</Path>
+			<Tag>75B6B3A32F66BD93633C853B4A6D22DCED73BCD3A92C490F569D2DA3B3E81A06</Tag>
+		</entry>
+		<entry name="._cpSSL.jar">
+			<Algid>00008021</Algid>
+			<Path>./cpSSL.jar</Path>
+			<Tag>7A154E550858A9A741E8E3505D7F913C2EF802DB2C3F7F41A211298498781A5A</Tag>
+		</entry>
+		<entry name="._ControlPane.exe">
+			<Algid>00008021</Algid>
+			<Path>./ControlPane.exe</Path>
+			<Tag>5743F3B8EC37701FC4E45E0F76F9F535B7258650DEA6C7BBB309ADCDF5AEA333</Tag>
+		</entry>
+		<entry name="._JCPRequest.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCPRequest.jar</Path>
+			<Tag>C8A48F92C49E029EBE09BCE4C26A09B9BD1BFE056DC40CE07CF6F642EA5A735B</Tag>
+		</entry>
+		<entry name="._ASN1P.jar">
+			<Algid>00008021</Algid>
+			<Path>./ASN1P.jar</Path>
+			<Tag>62BF8844DE3D1D126AD46C780C7E5D4886EF49D23AA2318F06B3C059BCD20495</Tag>
+		</entry>
+		<entry name="._JCPxml.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCPxml.jar</Path>
+			<Tag>4333C0B98B73FF0956B3A3B32F77283D06497E6360A1F37320064C5B8201F4AC</Tag>
+		</entry>
+		<entry name="._JCPControlPane.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCPControlPane.jar</Path>
+			<Tag>451ABA18B3683D53ED8A16A03C5F21289613AF036E834D49BF05E7005F85DABD</Tag>
+		</entry>
+		<entry name="._CAdES.jar">
+			<Algid>00008021</Algid>
+			<Path>./CAdES.jar</Path>
+			<Tag>55FC477573A6BF1D4F5A6659899F5D690A243B40D08F5B4AC4BDD705F824FD99</Tag>
+		</entry>
+		<entry name="._cmsutil.jar">
+			<Algid>00008021</Algid>
+			<Path>./cmsutil.jar</Path>
+			<Tag>E93F648613CABDA069A12888F065065C7FB7B8277DF2CA3654F10C359F9182AD</Tag>
+		</entry>
+		<entry name="._OCF.jar">
+			<Algid>00008021</Algid>
+			<Path>./OCF.jar</Path>
+			<Tag>93AA8C4330CCBCD3FA99E0D10AF9EB3B5F4226A187F4AD664430898D2931B813</Tag>
+		</entry>
+		<entry name="._tls_proxy.jar">
+			<Algid>00008021</Algid>
+			<Path>./tls_proxy.jar</Path>
+			<Tag>9A6B1BE7D0DE73D71D95EAEF124F32B600F26B0B385C0C91FAC562C6CDCA7FAE</Tag>
+		</entry>
+		<entry name="._XMLDSigRI.jar">
+			<Algid>00008021</Algid>
+			<Path>./XMLDSigRI.jar</Path>
+			<Tag>BEF0150D5BE73ADDCD791FD22A6DAF6CC177B169FE4DB910EC28B9BC3C757F57</Tag>
+		</entry>
+		<entry name="._JCryptoP.jar">
+			<Algid>00008021</Algid>
+			<Path>./JCryptoP.jar</Path>
+			<Tag>AA9C40B58546210010ECAD8384D7FDB702544DAFEC213D192FD35AA12ABD15B3</Tag>
+		</entry>
+		<entry name="._XAdES.jar">
+			<Algid>00008021</Algid>
+			<Path>./XAdES.jar</Path>
+			<Tag>0C4E27941E3914B1BAF292DCDD324D892AEA5DF89CC48F402777931162C93CD1</Tag>
+		</entry>
+		<entry name="._AdES-core.jar">
+			<Algid>00008021</Algid>
+			<Path>./AdES-core.jar</Path>
+			<Tag>2FCAE21391B19E6F90A0139A62661ED29B4444A718CED9F7EDCF4F4AA2902A39</Tag>
+		</entry>
+	<entry name="ЖТЯИ.00101-01 30 01. Формуляр.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 30 01. Формуляр.pdf</Path><Algid>00008021</Algid><Tag>20EC693DBAF67E92D7C52538D5802D459E6146FDFA85CBE4773D91A6E5915F80</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 91 12. Руководство администратора безопасности JavaCSP и JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 91 12. Руководство администратора безопасности JavaCSP и JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>21C8E607532A5A62A236F50B4458E5F1C69A54E5F372FCBD03E4863F2906992B</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 92 04. Инструкция по использованию Java CSP.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 92 04. Инструкция по использованию Java CSP.pdf</Path><Algid>00008021</Algid><Tag>AEE2172DC398E042581E5B02AB3BA4594FD1125926A99F76B824D0C86449BE3B</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 92 05. Инструкция по использованию JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 92 05. Инструкция по использованию JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>9981C004DBF9025B664BAD8EB3D05EC50953184BB94C6DC3B94D8A5F71FFF3A7</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 95 01. Правила пользования.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 95 01. Правила пользования.pdf</Path><Algid>00008021</Algid><Tag>45BA6B581FCB68ED2F283C41FD604EA9D393B8B87C3061FC7F8B2152FA13F3CA</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 96 02. Руководство программиста JavaCSP и Android.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 96 02. Руководство программиста JavaCSP и Android.pdf</Path><Algid>00008021</Algid><Tag>C218A3CEC61835C528AD2A133B376CD93EBEF40050F38294F415D0CBBC2B2400</Tag></entry>
+		<entry name="ЖТЯИ.00101-01 96 03. Руководство программиста JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00101-01-JCSP/ЖТЯИ.00101-01 96 03. Руководство программиста JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>9CCCC1B2116910EF5BBE6EC9AF26CEE7ACB4813ED4420766975384252D0A265F</Tag></entry><entry name="ЖТЯИ.00102-01 30 01. Формуляр.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 30 01. Формуляр.pdf</Path><Algid>00008021</Algid><Tag>AC7B6162773EC69C4798BEBDD696E01A31440D5C8754E5CA9FDBFEB306255CC6</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 91 12. Руководство администратора безопасности. JavaCSP и JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 91 12. Руководство администратора безопасности. JavaCSP и JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>CE0B3A87CE3F680656C9E55C962F5D8166B473842E3C67929E1C5A9D5EB3343C</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 92 04. Инструкция по использованию. JavaCSP.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 92 04. Инструкция по использованию. JavaCSP.pdf</Path><Algid>00008021</Algid><Tag>CE00FBCA2BD8773255DC28F29830F603B784F347EB02529ADA45CE3F581B5298</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 92 05. Инструкция по использованию. JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 92 05. Инструкция по использованию. JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>2180A66412EC0E6DA9D86CC4CF0427082935479DA2AEEF0D156DE8CD4A78E942</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 95 01. Правила пользования.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 95 01. Правила пользования.pdf</Path><Algid>00008021</Algid><Tag>35EA87B4F5F96299D59856977B4F4E40AE88C5E5626D57B220E06406CFC71DD4</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 96 02. Руководство программиста. JavaCSP.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 96 02. Руководство программиста. JavaCSP.pdf</Path><Algid>00008021</Algid><Tag>DF6CCD0776F297A99EC6A1861D53BEB106E42B850243408D5D4AC9AEEE3D046C</Tag></entry>
+		<entry name="ЖТЯИ.00102-01 96 03. Руководство программиста. JavaTLS.pdf">
+			<Path>./Doc/ЖТЯИ.00102-01-JCSP/ЖТЯИ.00102-01 96 03. Руководство программиста. JavaTLS.pdf</Path><Algid>00008021</Algid><Tag>6768796D22618C030D609EDCBE0E3D9822CB2EAF497478154A7E5B92F33DA4F9</Tag></entry></catalog>
+</CProIntegrity>

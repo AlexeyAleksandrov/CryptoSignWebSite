@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.cryptopro.tomcat</groupId>
+    <artifactId>JCPTomcatAdapter</artifactId>
+    <version>2.5-SNAPSHOT</version>
+    <repositories>
+        <repository>
+            <id>local_repository</id>
+            <url>file://${basedir}/repository</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-coyote</artifactId>
+            <version>9.0.0.M9</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-juli</artifactId>
+            <version>9.0.0.M9</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.cprocsp</groupId>
+            <artifactId>JCP</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.cprocsp</groupId>
+            <artifactId>cpSSL</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.cprocsp</groupId>
+            <artifactId>JCPRevCheck</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ru.cprocsp</groupId>
+            <artifactId>JCryptoP</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+ <build>
+
+    	<pluginManagement>
+
+    		<plugins>
+
+ <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>10</source>
+                        <target>10</target>
+                        <encoding>UTF-8</encoding>
+                        <debug>true</debug>
+                        <fork>true</fork>
+                        <compilerVersion>10</compilerVersion>
+                    </configuration>
+                </plugin>
+	</plugins>
+    	</pluginManagement>
+ </build>
+
+    <description>Переходник cpSSL (JCP) для tomcat 9.0.0.M9</description>
+
+</project>
