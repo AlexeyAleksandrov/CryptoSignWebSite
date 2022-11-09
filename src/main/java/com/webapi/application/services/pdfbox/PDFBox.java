@@ -60,7 +60,7 @@ public class PDFBox
         return image;
     }
 
-    public static void main(String args[]) throws Exception
+    public void main(String args[]) throws Exception
     {
         String fileNameInput = "C:\\Users\\ASUS\\Downloads\\docs_conv\\титульник_pdf.pdf";
         String fileNameOutput= "C:\\Users\\ASUS\\Downloads\\docs_conv\\титульник_pdf_out.pdf";

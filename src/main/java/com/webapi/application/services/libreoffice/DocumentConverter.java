@@ -225,7 +225,7 @@ public class DocumentConverter
         }
     }
 
-    public static void main(String args[]) throws BootstrapException
+    public void main(String args[]) throws BootstrapException
     {
         // делаю экспорт файлов
         try

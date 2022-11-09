@@ -1,0 +1,2 @@
+Для установки JSP в локальный репозиторий использовать эту команду
+mvn install:install-file -Dfile=C:/Users/ASUS/IdeaProjects/CryptoSignWebSite/libs/java-csp-5.0.40363-A/JCSP.jar -DgroupId=ru.cryptopro.jcp -DartifactId=jcp-jscp -Dversion=5.0.40363-A -Dpackaging=jar

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Main
 {
-    public static void main(String[] args) throws Exception
+    public void main(String[] args) throws Exception
     {
         CryptoPRO_JSP cryptoPRO_jsp = new CryptoPRO_JSP();
 

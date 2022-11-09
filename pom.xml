@@ -170,6 +170,12 @@
             <version>42.2.10</version>
         </dependency>
 
+        <dependency>
+            <groupId>ru.cryptopro.jcp</groupId>
+            <artifactId>jcp-jscp</artifactId>
+            <version>5.0.40363-A</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -178,7 +184,62 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        </plugins>
 
+<!--            &lt;!&ndash;        Для CryptoPRO JSP, возможно и не надо&ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy-dependencies</id>-->
+<!--                        <phase>prepare-package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>-->
+<!--                                ${project.build.directory}/libs-->
+<!--                            </outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <addClasspath>true</addClasspath>-->
+<!--                            <classpathPrefix>libs/</classpathPrefix>-->
+<!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--                            <mainClass>-->
+<!--                                site.barsukov.java_csp.Application-->
+<!--                            </mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <appendAssemblyId>false</appendAssemblyId>-->
+<!--                            <descriptors>-->
+<!--                                <descriptor>src/main/resources/assembly.xml</descriptor>-->
+<!--                            </descriptors>-->
+<!--                            <finalName>${project.artifactId}-${project.version}</finalName>-->
+<!--                            <outputDirectory>${project.build.directory}/distr</outputDirectory>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+        </plugins>
     </build>
 </project>
