@@ -13,6 +13,12 @@ public class CertificateModel
     private Map<String, String> params;
     private KeyStore keyStore;  // хранилище сертификатов
     private PrivateKey privateKey;
+    private String certificateName;
+    private String owner;
+    private String surname;
+    private String nameAndPatronymic;
+    private String position;    // должность
+    private String department; // отдел
 //    TODO: Доделать поля, такие как CN и т.п.
 
     public static Map<String, String> getParamsByX509Certificate(X509Certificate x509Certificate)
@@ -53,6 +59,39 @@ public class CertificateModel
     {
         this.x509Certificate = x509Certificate;
         this.params = getParamsByX509Certificate(x509Certificate);
+        System.out.println(params);
+
+        for(String key : params.keySet())
+        {
+            switch (key)
+            {
+                case "CN":
+                {
+                    this.certificateName = params.get(key);
+                    break;
+                }
+                case "O":
+                {
+                    this.owner = params.get(key);
+                    break;
+                }
+                case "SN":
+                {
+                    this.surname = params.get(key);
+                    break;
+                }
+                case "G":
+                {
+                    this.nameAndPatronymic = params.get(key);
+                    break;
+                }
+                case "T":
+                {
+                    this.department = params.get(key);
+                    break;
+                }
+            }
+        }
     }
 
     public Map<String, String> getParams()
@@ -78,5 +117,11 @@ public class CertificateModel
     public void setPrivateKey(PrivateKey privateKey)
     {
         this.privateKey = privateKey;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "CertificateModel{" + "alias='" + alias + '\'' + ", x509Certificate=" + x509Certificate + ", params=" + params + ", keyStore=" + keyStore + ", privateKey=" + privateKey + ", certificateName='" + certificateName + '\'' + ", owner='" + owner + '\'' + ", surname='" + surname + '\'' + ", nameAndPatronymic='" + nameAndPatronymic + '\'' + ", position='" + position + '\'' + ", department='" + department + '\'' + '}';
     }
 }
