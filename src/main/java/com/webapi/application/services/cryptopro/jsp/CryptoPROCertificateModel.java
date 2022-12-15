@@ -19,6 +19,7 @@ public class CryptoPROCertificateModel
     private String nameAndPatronymic;
     private String position;    // должность
     private String department; // отдел
+    private String certificateSerialNumber;     // серийный номер сертификата (отображается на картинке)
 //    TODO: Доделать поля, такие как CN и т.п.
 
     public static Map<String, String> getParamsByX509Certificate(X509Certificate x509Certificate)
@@ -117,6 +118,16 @@ public class CryptoPROCertificateModel
     public void setPrivateKey(PrivateKey privateKey)
     {
         this.privateKey = privateKey;
+    }
+
+    public String getCertificateSerialNumber()
+    {
+        return certificateSerialNumber;
+    }
+
+    public void setCertificateSerialNumber(String certificateSerialNumber)
+    {
+        this.certificateSerialNumber = certificateSerialNumber;
     }
 
     @Override

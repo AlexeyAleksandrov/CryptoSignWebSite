@@ -113,6 +113,7 @@ public class CryptoPRO_JSP
                     cryptoPROCertificateModel.setX509Certificate(curCert);
                     cryptoPROCertificateModel.setKeyStore(hdImageStore);
 //                    certificateModel.setPrivateKey(privateKey);
+                    cryptoPROCertificateModel.setCertificateSerialNumber(curCert.getSerialNumber().toString(16).toUpperCase());     // серийный номер сертификата (отображается на картинке)
 
                     certificatesList.add(cryptoPROCertificateModel);  // добавляем сертификат в список
                 }
@@ -171,6 +172,7 @@ public class CryptoPRO_JSP
                 cryptoPROCertificateModel.setAlias(alias);
                 cryptoPROCertificateModel.setX509Certificate(curCert);
                 cryptoPROCertificateModel.setKeyStore(ks);
+                cryptoPROCertificateModel.setCertificateSerialNumber(curCert.getSerialNumber().toString(16).toUpperCase());     // серийный номер сертификата (отображается на картинке)
 
                 certificatesList.add(cryptoPROCertificateModel);  // добавляем сертификат в список
             }
