@@ -8,7 +8,8 @@ public class Main
     {
         CryptoPRO_JSP cryptoPRO_jsp = new CryptoPRO_JSP();
 
-        List<CertificateModel> ruTokenCertificatesList = cryptoPRO_jsp.getRuTokenCertificates();  // получаем список сертификатов РуТокен
+        cryptoPRO_jsp.loadRuTokenCertificates();
+        List<CryptoPROCertificateModel> ruTokenCertificatesList = cryptoPRO_jsp.getRuTokenCertificatesList();  // получаем список сертификатов РуТокен
 
         String password = "12345678";
         String fileName = "C:\\Users\\ASUS\\Downloads\\googleplaystore.csv";

@@ -2,6 +2,8 @@ package com.webapi.application.services.cryptopro.jsp;
 
 import CMS_samples.CMStools;
 import com.objsys.asn1j.runtime.*;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.CryptoPro.Crypto.CryptoProvider;
 import ru.CryptoPro.JCP.ASN.CryptographicMessageSyntax.*;
 import ru.CryptoPro.JCP.ASN.PKIX1Explicit88.CertificateSerialNumber;
@@ -22,10 +24,21 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+@Component
 public class CryptoPRO_JSP
 {
     private final Provider prov;
-//    List<CertificateModel> ruTokenCertificatesList; // TODO: Продумать, как быть с паролями от токенов
+    private List<CryptoPROCertificateModel> ruTokenCertificatesList; // TODO: Продумать, как быть с паролями от токенов
+
+    public List<CryptoPROCertificateModel> getRuTokenCertificatesList()
+    {
+        return ruTokenCertificatesList;
+    }
+
+    public void loadRuTokenCertificates()
+    {
+        ruTokenCertificatesList = readRuTokenCertificates();
+    }
 
     public CryptoPRO_JSP()
     {
@@ -50,12 +63,12 @@ public class CryptoPRO_JSP
 //        ruTokenCertificatesList = getRuTokenCertificates(prov, "12345678".toCharArray());  // получаем список сертификатов РуТокен
     }
 
-    public List<CertificateModel> getRuTokenCertificates()
+    private List<CryptoPROCertificateModel> readRuTokenCertificates()
     {
         boolean diskonnectedError = true;
         int k = 0;
 
-        List<CertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
+        List<CryptoPROCertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
 
         while (diskonnectedError && k < 1000)
         {
@@ -95,13 +108,13 @@ public class CryptoPRO_JSP
 //                    PrivateKey privateKey = (PrivateKey) hdImageStore.getKey(alias, password);
                     // === конец 2 способа ===
 
-                    CertificateModel certificateModel = new CertificateModel();     // создаем модель сертификата
-                    certificateModel.setAlias(alias);
-                    certificateModel.setX509Certificate(curCert);
-                    certificateModel.setKeyStore(hdImageStore);
+                    CryptoPROCertificateModel cryptoPROCertificateModel = new CryptoPROCertificateModel();     // создаем модель сертификата
+                    cryptoPROCertificateModel.setAlias(alias);
+                    cryptoPROCertificateModel.setX509Certificate(curCert);
+                    cryptoPROCertificateModel.setKeyStore(hdImageStore);
 //                    certificateModel.setPrivateKey(privateKey);
 
-                    certificatesList.add(certificateModel);  // добавляем сертификат в список
+                    certificatesList.add(cryptoPROCertificateModel);  // добавляем сертификат в список
                 }
                 diskonnectedError = false;
 
@@ -131,9 +144,9 @@ public class CryptoPRO_JSP
         return certificatesList;
     }
 
-    public List<CertificateModel> getLocalCertificates()
+    private List<CryptoPROCertificateModel> readLocalCertificates()
     {
-        List<CertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
+        List<CryptoPROCertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
 
         try
         {
@@ -154,12 +167,12 @@ public class CryptoPRO_JSP
                 }
                 X509Certificate curCert = (X509Certificate) cert;
 
-                CertificateModel certificateModel = new CertificateModel();     // создаем модель сертификата
-                certificateModel.setAlias(alias);
-                certificateModel.setX509Certificate(curCert);
-                certificateModel.setKeyStore(ks);
+                CryptoPROCertificateModel cryptoPROCertificateModel = new CryptoPROCertificateModel();     // создаем модель сертификата
+                cryptoPROCertificateModel.setAlias(alias);
+                cryptoPROCertificateModel.setX509Certificate(curCert);
+                cryptoPROCertificateModel.setKeyStore(ks);
 
-                certificatesList.add(certificateModel);  // добавляем сертификат в список
+                certificatesList.add(cryptoPROCertificateModel);  // добавляем сертификат в список
             }
         } catch (KeyStoreException e) {
             System.err.println("Error: "+ e);
@@ -170,14 +183,14 @@ public class CryptoPRO_JSP
         return certificatesList;
     }
 
-    public void createSign(String fileName, CertificateModel certificateModel, String tokenPassword, boolean detached) throws Exception
+    public void createSign(String fileName, CryptoPROCertificateModel cryptoPROCertificateModel, String tokenPassword, boolean detached) throws Exception
     {
         final byte[] data = Array.readFile(fileName);
-        String alias = certificateModel.getAlias();
-        KeyStore keyStore = certificateModel.getKeyStore();
+        String alias = cryptoPROCertificateModel.getAlias();
+        KeyStore keyStore = cryptoPROCertificateModel.getKeyStore();
         char[] password = tokenPassword.toCharArray();
         PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
-        Array.writeFile( fileName + ".sig", CMSSignEx(data, privateKey, certificateModel.getX509Certificate(), detached,
+        Array.writeFile( fileName + ".sig", CMSSignEx(data, privateKey, cryptoPROCertificateModel.getX509Certificate(), detached,
                 JCP.GOST_DIGEST_2012_256_OID,
                 JCP.GOST_SIGN_2012_256_OID, JCP.GOST_SIGN_2012_256_NAME, JCP.PROVIDER_NAME) );
     }
