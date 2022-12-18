@@ -50,6 +50,7 @@ public class SignServiceController
         CreateSignFormModel createSignFormModel = null;
         if(authentication != null)  // если пользователь авторизован
         {
+            // шаблоны
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             User user = usersRepository.findByUsername(userDetails.getUsername()).orElse(null); // получаем пользователя
 
@@ -63,6 +64,24 @@ public class SignServiceController
                 {
                     createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
                 }
+
+//                // подгружаем с токена
+//                List<CryptoPROCertificateModel> certificates = cryptoProSignService.getCertificates();
+//
+//                for (CryptoPROCertificateModel cert : certificates)
+//                {
+//                    SignTemplateModel signTemplateModel = new SignTemplateModel();
+//                    signTemplateModel.setTemplateName(cert.getCertificateName());
+//                    signTemplateModel.setSignCertificate(cert.getCertificateSerialNumber());
+//                    signTemplateModel.setSignOwner(cert.getSurname() + " " + cert.getNameAndPatronymic());
+//                    signTemplateModel.setSignOwner(cert.getOwner());
+//                    signTemplateModel.setSignDateStart(cert.getValidFrom().toString());
+//                    signTemplateModel.setSignDateEnd(cert.getValidTo().toString());
+//
+//                    signTemplateModels.add(signTemplateModel);
+//                }
+//
+//                model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
             }
         }
 

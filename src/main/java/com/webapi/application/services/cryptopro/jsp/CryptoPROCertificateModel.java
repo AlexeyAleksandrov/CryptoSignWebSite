@@ -160,4 +160,34 @@ public class CryptoPROCertificateModel
     {
         return "CertificateModel{" + "alias='" + alias + '\'' + ", x509Certificate=" + x509Certificate + ", params=" + params + ", keyStore=" + keyStore + ", privateKey=" + privateKey + ", certificateName='" + certificateName + '\'' + ", owner='" + owner + '\'' + ", surname='" + surname + '\'' + ", nameAndPatronymic='" + nameAndPatronymic + '\'' + ", position='" + position + '\'' + ", department='" + department + '\'' + '}';
     }
+
+    public String getCertificateName()
+    {
+        return certificateName;
+    }
+
+    public String getOwner()
+    {
+        return owner;
+    }
+
+    public String getSurname()
+    {
+        return surname;
+    }
+
+    public String getNameAndPatronymic()
+    {
+        return nameAndPatronymic;
+    }
+
+    public String getPosition()
+    {
+        return position;
+    }
+
+    public String getDepartment()
+    {
+        return department;
+    }
 }
