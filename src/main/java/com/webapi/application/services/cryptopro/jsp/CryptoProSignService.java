@@ -50,6 +50,7 @@ public class CryptoProSignService
         // перебираем все сертификаты
         for (CryptoPROCertificateModel certificate : certificates)
         {
+            // если номер сертификата совпадает
             if (certificate.getCertificateSerialNumber().equals(serialNumber))
             {
                 return certificate;
@@ -59,4 +60,29 @@ public class CryptoProSignService
         // если ничего не нашлось
         return new CryptoPROCertificateModel();
     }
+
+    /** Функция создания подписи к файлу
+     * @param fileName файл, который нужно подписать
+     * @param cryptoPROCertificateModel сертификат
+     * @param tokenPassword пароль от РуТокен
+     * @param detached открепленная подпись
+     * @throws Exception исключения
+     */
+    public void createSign(String fileName, CryptoPROCertificateModel cryptoPROCertificateModel, String tokenPassword, boolean detached) throws Exception
+    {
+        cryptoPRO_jsp.createSign(fileName, cryptoPROCertificateModel, tokenPassword, detached);
+    }
+
+    /** Функция создания подписи к файлу, перегрузка
+     * @param fileName  файл, который нужно подписать
+     * @param serialNumber номер сертификата
+     * @param tokenPassword пароль от РуТокен
+     * @param detached открепленная подпись
+     * @throws Exception исключения
+     */
+    public void createSign(String fileName, String serialNumber, String tokenPassword, boolean detached) throws Exception
+    {
+        cryptoPRO_jsp.createSign(fileName, getCertificateBySerialNumber(serialNumber), tokenPassword, detached);
+    }
+
 }

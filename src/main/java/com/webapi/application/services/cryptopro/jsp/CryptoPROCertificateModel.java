@@ -3,6 +3,7 @@ package com.webapi.application.services.cryptopro.jsp;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ public class CryptoPROCertificateModel
     private String position;    // должность
     private String department; // отдел
     private String certificateSerialNumber;     // серийный номер сертификата (отображается на картинке)
+    private Date validFrom;     // дата начала действия сертификата
+    private Date validTo;       // дата окончания действия сертификата
 //    TODO: Доделать поля, такие как CN и т.п.
 
     public static Map<String, String> getParamsByX509Certificate(X509Certificate x509Certificate)
@@ -60,6 +63,8 @@ public class CryptoPROCertificateModel
     {
         this.x509Certificate = x509Certificate;
         this.params = getParamsByX509Certificate(x509Certificate);
+        this.setValidFrom(x509Certificate.getNotBefore());
+        this.setValidTo(x509Certificate.getNotAfter());
         System.out.println(params);
 
         for(String key : params.keySet())
@@ -128,6 +133,26 @@ public class CryptoPROCertificateModel
     public void setCertificateSerialNumber(String certificateSerialNumber)
     {
         this.certificateSerialNumber = certificateSerialNumber;
+    }
+
+    public Date getValidFrom()
+    {
+        return validFrom;
+    }
+
+    public void setValidFrom(Date validFrom)
+    {
+        this.validFrom = validFrom;
+    }
+
+    public Date getValidTo()
+    {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo)
+    {
+        this.validTo = validTo;
     }
 
     @Override

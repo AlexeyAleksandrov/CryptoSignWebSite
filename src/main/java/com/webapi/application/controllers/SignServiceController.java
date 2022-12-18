@@ -3,6 +3,8 @@ package com.webapi.application.controllers;
 import com.webapi.application.models.sign.SignTemplateModel;
 import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.UsersRepository;
+import com.webapi.application.services.cryptopro.jsp.CryptoPROCertificateModel;
+import com.webapi.application.services.cryptopro.jsp.CryptoProSignService;
 import com.webapi.application.services.handlers.Excel.ExcelHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.UploadedFileHandler;
@@ -37,6 +39,7 @@ public class SignServiceController
     final WordHandler wordHandler;      // обработчик Word документов
     final ExcelHandler excelHandler;    // обработчик Excel документов
     final PDFHandler pdfHandler;    // обработчик PDF документов
+    final CryptoProSignService cryptoProSignService;    // сервис создания подписей
 
     // репозитории
     UsersRepository usersRepository;
@@ -89,7 +92,7 @@ public class SignServiceController
             return "redirect:/sign/create";
         }   // TODO: Сделать стилизацию input с файлами, шаблон -> https://snipp.ru/html-css/input-file-style
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
-        String currentDir = System.getProperty("user.dir");
+        final String currentDir = System.getProperty("user.dir");
         String fileName = currentDir + "/uploadedfiles/" + createSignFormModel.getFile().getOriginalFilename();   // получаем оригинальное название файла, который был загружен
 
         // проверка корректности входных данных
@@ -168,7 +171,12 @@ public class SignServiceController
                 documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
                 outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
 
-                return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
+                // создаём подпись
+                String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
+                CryptoPROCertificateModel sert = cryptoProSignService.getCertificates().get(4);
+                cryptoProSignService.createSign(fileForSignName, sert, "12345678", true);
+
+                return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
             }
             catch (Exception e)
             {
