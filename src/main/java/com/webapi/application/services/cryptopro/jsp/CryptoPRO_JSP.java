@@ -3,7 +3,6 @@ package com.webapi.application.services.cryptopro.jsp;
 import CMS_samples.CMStools;
 import com.objsys.asn1j.runtime.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.CryptoPro.Crypto.CryptoProvider;
 import ru.CryptoPro.JCP.ASN.CryptographicMessageSyntax.*;
 import ru.CryptoPro.JCP.ASN.PKIX1Explicit88.CertificateSerialNumber;
@@ -27,19 +26,34 @@ import java.util.List;
 @Component
 public class CryptoPRO_JSP
 {
+    /**
+     * КриптоПРО JSP провайдер
+     */
     private final Provider prov;
+    /**
+     * Внутренний список сертификатов РуТокен
+     */
     private List<CryptoPROCertificateModel> ruTokenCertificatesList; // TODO: Продумать, как быть с паролями от токенов
 
+    /** Получение списка загруженных сертификатов РуТокен
+     * @return список загруженных ранее сертификатов РуТокен
+     */
     public List<CryptoPROCertificateModel> getRuTokenCertificatesList()
     {
         return ruTokenCertificatesList;
     }
 
+    /**
+     * Обновить/загрузить список доступных в данный момент сертификатов РуТокен
+     */
     public void loadRuTokenCertificates()
     {
         ruTokenCertificatesList = readRuTokenCertificates();
     }
 
+    /**
+     * Конструктор. Выполняется настройка подключения КриптПРО
+     */
     public CryptoPRO_JSP()
     {
         // КриптоПРО провайдер
@@ -63,40 +77,43 @@ public class CryptoPRO_JSP
 //        ruTokenCertificatesList = getRuTokenCertificates(prov, "12345678".toCharArray());  // получаем список сертификатов РуТокен
     }
 
+    /** Чтение всех сертификатов со всех подключенных токенов РуТокен
+     * @return список сертификатов
+     */
     private List<CryptoPROCertificateModel> readRuTokenCertificates()
     {
-        boolean diskonnectedError = true;
-        int k = 0;
+        int k = 0;  // счётчик кол-ва попыток считывания сертификатов
 
         List<CryptoPROCertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
 
-        while (diskonnectedError && k < 1000)
+        while (k < 1000)   // Обычно с 1 раза не срабатывает. Это проблема КриптоПРО, обычно на 2-3 раз всё нормально, но на всякий случай доступно до 1000 попыток
         {
             try
             {
                 System.out.println("Попытка №" + (k+1));
 
-                final String KEYSTORE_TYPE = "RutokenStore";
-                final Provider KEYSTORE_PROVIDER = prov;
+                final String KEYSTORE_TYPE = "RutokenStore";    // тип хранилища
+                final Provider KEYSTORE_PROVIDER = prov;        // провайдер
 
-                final KeyStore hdImageStore = KeyStore.getInstance(KEYSTORE_TYPE, KEYSTORE_PROVIDER);
-                hdImageStore.load(null, null);
-                System.out.println("Loading...");
+                final KeyStore hdImageStore = KeyStore.getInstance(KEYSTORE_TYPE, KEYSTORE_PROVIDER);   // получаем хранилище сертификатов
+                hdImageStore.load(null, null);      // загружаем список сертификатов
+                System.out.println("Loading...");       // процесс долгий, обычно секунд 10 на каждый сертификат уходит
 
-                Enumeration<String> aliases = hdImageStore.aliases();
+                Enumeration<String> aliases = hdImageStore.aliases();       // получаем список ID загруженных сертификатов
 
-                while (aliases.hasMoreElements())
+                while (aliases.hasMoreElements())   // перебор всех ID
                 {
                     String alias = aliases.nextElement();
-                    Certificate cert = hdImageStore.getCertificate(alias);
+                    Certificate cert = hdImageStore.getCertificate(alias);      // получаем сертификат из хранилища по его ID
                     if (cert == null) {
                         continue;
                     }
                     if (!(cert instanceof X509Certificate)) {
                         continue;
                     }
-                    X509Certificate curCert = (X509Certificate) cert;
+                    X509Certificate curCert = (X509Certificate) cert;       // преобразовываем к сертификату для создания подписи
 
+                    // На всякий случай. не удалять!!!
                     // === способ 1 - рабочий ===
 //                    KeyStore.ProtectionParameter protectedParam = new KeyStore.PasswordProtection("12345678".toCharArray());
 //                    JCPPrivateKeyEntry entry = (JCPPrivateKeyEntry) hdImageStore.getEntry(alias, protectedParam);
@@ -108,26 +125,25 @@ public class CryptoPRO_JSP
 //                    PrivateKey privateKey = (PrivateKey) hdImageStore.getKey(alias, password);
                     // === конец 2 способа ===
 
+                    // помещаем полученный сертификат в модель сертификата для удобства дальнейшей работы
                     CryptoPROCertificateModel cryptoPROCertificateModel = new CryptoPROCertificateModel();     // создаем модель сертификата
                     cryptoPROCertificateModel.setAlias(alias);
                     cryptoPROCertificateModel.setX509Certificate(curCert);
                     cryptoPROCertificateModel.setKeyStore(hdImageStore);
-//                    certificateModel.setPrivateKey(privateKey);
+//                    certificateModel.setPrivateKey(privateKey); // закрытый ключ лучше не хранить, пользователь сам его будет вводить
                     cryptoPROCertificateModel.setCertificateSerialNumber(curCert.getSerialNumber().toString(16).toUpperCase());     // серийный номер сертификата (отображается на картинке)
 
                     certificatesList.add(cryptoPROCertificateModel);  // добавляем сертификат в список
                 }
-                diskonnectedError = false;
 
                 System.out.println("Load complete!");
+                break;
             }
             catch (CertificateException | NoSuchAlgorithmException | RuntimeException | IOException | KeyStoreException e)
             {
                 if(e.getMessage().equals("RutokenStore not found"))
                 {
                     System.out.println("РуТокен не вставлен!");
-                    diskonnectedError = false;
-                    k = 1000;
                     break;
                 }
                 else if(e.getMessage().contains("Card has been disconnected"))
@@ -145,6 +161,9 @@ public class CryptoPRO_JSP
         return certificatesList;
     }
 
+    /** Получение списка локальных (установленных) сертификатов
+     * @return список сертификатов
+     */
     private List<CryptoPROCertificateModel> readLocalCertificates()
     {
         List<CryptoPROCertificateModel> certificatesList = new ArrayList<>();     // список сертификатов
@@ -185,21 +204,31 @@ public class CryptoPRO_JSP
         return certificatesList;
     }
 
+    /** Создание электронной подписи к файлу
+     * @param fileName полный путь к файлу, который будет подписываться
+     * @param cryptoPROCertificateModel сертификат, которым выполняется подпись
+     * @param tokenPassword пароль от РуТокен
+     * @param detached отсоединённая подпись (true - отсоединённая, false - присоединённая)
+     * @throws Exception ошибки подписи
+     */
     public void createSign(String fileName, CryptoPROCertificateModel cryptoPROCertificateModel, String tokenPassword, boolean detached) throws Exception
     {
-        final byte[] data = Array.readFile(fileName);
-        String alias = cryptoPROCertificateModel.getAlias();
-        KeyStore keyStore = cryptoPROCertificateModel.getKeyStore();
-        char[] password = tokenPassword.toCharArray();
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
+        // TODO: заменить Exception на return bool - корректно или некорректно выполнена подпись
+        // TODO: добавить Enum с результатом выполнения в качестве параметра функции - записывать туда значения ошибок
+        // TODO: сделать проверку на существование файла
+        final byte[] data = Array.readFile(fileName);   // читаем подписываемый файл как бинарный
+        String alias = cryptoPROCertificateModel.getAlias();    // получаем ID ключа
+        KeyStore keyStore = cryptoPROCertificateModel.getKeyStore();    // получаем хранилище сертификатов
+        char[] password = tokenPassword.toCharArray();      // конвертируем пароль в массив символов
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);      // пытаемся получить закрытый ключ используя пароль
+        // TODO: сделать try для пароля и выдавать ошибку
+        // TODO: сделать проверку на правильный алгоритм (try/catch)
         Array.writeFile( fileName + ".sig", CMSSignEx(data, privateKey, cryptoPROCertificateModel.getX509Certificate(), detached,
                 JCP.GOST_DIGEST_2012_256_OID,
                 JCP.GOST_SIGN_2012_256_OID, JCP.GOST_SIGN_2012_256_NAME, JCP.PROVIDER_NAME) );
     }
 
-    /**
-     * sign CMS
-     *
+    /** Функция из документации - sign CMS, как работает - не знаю :)
      * @param data data
      * @param key key
      * @param cert cert
