@@ -1,5 +1,6 @@
 package com.webapi.application.controllers;
 
+import com.webapi.application.models.sign.RuTokenSignModel;
 import com.webapi.application.models.sign.SignTemplateModel;
 import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.UsersRepository;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -92,6 +94,64 @@ public class SignServiceController
 
         model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
         return "sign/service/create";
+    }
+
+    @RequestMapping(value = "/createRuToken", method = RequestMethod.GET)
+    public String createSignFromRuToken(Model model, Authentication authentication,
+                                        @RequestParam(name = "index", required = false, defaultValue = "-1") int index)
+    {
+        CreateSignFormModel createSignFormModel = null;
+        if(authentication != null)  // если пользователь авторизован
+        {
+            // шаблоны
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User user = usersRepository.findByUsername(userDetails.getUsername()).orElse(null); // получаем пользователя
+
+            if(user != null)    // если пользователь найден
+            {
+                // загружаем список шаблонов пользователя
+//                List<SignTemplateModel> signTemplateModels = user.getSignTemplates();   // получаем список шаблонов
+//                model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
+//
+//                if(index >= 0 && index < signTemplateModels.size()) // проверяем границы индекса
+//                {
+//                    createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
+//                }
+
+                // подгружаем с токена
+                List<CryptoPROCertificateModel> certificates = cryptoProSignService.getCertificates();
+                List<RuTokenSignModel> ruTokenSignModels = new ArrayList<>();
+
+                for (CryptoPROCertificateModel cert : certificates)
+                {
+                    ruTokenSignModels.add(RuTokenSignModel.fromCryptoPROCertificateModel(cert));
+//                    SignTemplateModel signTemplateModel = new SignTemplateModel();
+//                    signTemplateModel.setTemplateName(cert.getCertificateName());
+//                    signTemplateModel.setSignCertificate(cert.getCertificateSerialNumber());
+//                    signTemplateModel.setSignOwner(cert.getSurname() + " " + cert.getNameAndPatronymic());
+//                    signTemplateModel.setSignOwner(cert.getOwner());
+//                    signTemplateModel.setSignDateStart(cert.getValidFrom().toString());
+//                    signTemplateModel.setSignDateEnd(cert.getValidTo().toString());
+//
+//                    signTemplateModels.add(signTemplateModel);
+                }
+
+                if(ruTokenSignModels.size() > 0)
+                {
+                    createSignFormModel = CreateSignFormModel.fromRuTokenModel(ruTokenSignModels.get(0));
+                }
+
+                model.addAttribute("ruTokenSignModels", ruTokenSignModels);   // отправляем список шаблонов
+            }
+        }
+
+        if(createSignFormModel == null)   // если модель не была добавлена
+        {
+            createSignFormModel = new CreateSignFormModel();
+        }
+
+        model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
+        return "sign/service/create_rutoken";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)

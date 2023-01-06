@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>CryptoSignService</title>
+    <link media="all" rel="stylesheet" th:href="@{/css/index/index.css}" type="text/css"/>
+    <link media="all" rel="stylesheet" th:href="@{/css/home/createsign_button.css}" type="text/css"/>
+    <link media="all" rel="stylesheet" th:href="@{/css/sign/service/create.css}" type="text/css"/>
+    <link href="/static/css/index/index.css" rel="stylesheet">
+    <link href="/static/css/home/createsign_button.css" rel="stylesheet">
+    <link href="/static/css/sign/service/create.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <table class="bottom_menu">
+        <tr>
+            <td class="logo_box">
+                <h1><a href="/" class="logo_link">CryptoSignService</a></h1>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/}" class="header_link">Главная</a>
+            </td>
+            <td class="header_item">
+                <a th:href="@{/signup}" class="header_link">Регистрация</a>
+            </td>
+        </tr>
+    </table>
+</header>
+<main class="">
+    <div class="div_vcenter">
+        <table>
+            <tr>
+                <td width="30%"><p></p></td>
+                <td>
+                    <fieldset>
+                        <legend><h3 class="main_header">Подпись документа</h3></legend>
+                        <form method="POST" enctype="multipart/form-data" th:action="@{/sign/upload}" th:object="${signModel}">
+                            <table class="main_text">
+                                <tr>
+                                    <td>Документ: </td>
+                                    <td colspan="3"><input type="file" th:field="*{file}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Владелец: </td>
+                                    <td colspan="3"><input type="text" th:field="*{signOwner}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td>Сертификат: </td>
+                                    <td colspan="3"><input type="text" th:field="*{signCertificate}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td>Действителен с </td>
+                                    <td><input type="date" th:field="*{signDateStart}" readonly></td>
+                                    <td> до </td>
+                                    <td><input type="date" th:field="*{signDateEnd}" readonly></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><input type="checkbox" th:field="*{drawLogo}" checked="checked"> Рисовать герб</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><input type="checkbox" th:field="*{checkTransitionToNewPage}"> Игнорировать переход на новую страницу</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <select size="1" th:field="*{insertType}">
+                                            <option disabled th:value="-1">Тип вставки</option>
+                                            <option th:value="0">В конец документа</option>
+                                            <option th:value="2">По тэгу</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <label for="submit">Подпись документа:</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="button_create_sign_table_data" align="center">
+                                        <input type="submit" value="Подписать" id="submit" class="button_create_sign button_create_sign_link_text">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </fieldset>
+                </td>
+                <td width="30%"><p></p></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <fieldset>
+                        <legend><h3 class="main_header">Доступные сертификаты</h3></legend>
+                        <div th:if="${ruTokenSignModels.size() > 0}">
+                            <table class="templates_table main_text" id="templates_table">
+                                <tr>
+                                    <th class="templates_table_data templates_table_header">Номер</th>
+                                    <th class="templates_table_data templates_table_header">Название</th>
+                                    <th class="templates_table_data templates_table_header">Владелец</th>
+                                    <th class="templates_table_data templates_table_header">Сертификат</th>
+                                    <th class="templates_table_data templates_table_header">Дата начала</th>
+                                    <th class="templates_table_data templates_table_header">Дата окончания</th>
+
+                                    <th class="templates_table_data templates_table_header">Выбрать</th>
+                                </tr>
+                                <tr class="templates_table_row" th:each="template: ${ruTokenSignModels}">
+                                    <td class="templates_table_data" th:text="${templateStat.index + 1}"></td>
+                                    <td class="templates_table_data" th:text="${template.certificateName}"></td>
+                                    <td class="templates_table_data" th:text="${template.signOwner}"></td>
+                                    <td class="templates_table_data" th:text="${template.signCertificate}"></td>
+                                    <td class="templates_table_data" th:text="${template.signDateStart}"></td>
+                                    <td class="templates_table_data" th:text="${template.signDateEnd}"></td>
+
+                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></div></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+
+<!--        <p class="clear"></p>-->
+
+    </div>
+</main>
+</body>
+</html>
