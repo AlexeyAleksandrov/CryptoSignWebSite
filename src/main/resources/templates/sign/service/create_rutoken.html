@@ -53,9 +53,9 @@
                                 </tr>
                                 <tr>
                                     <td>Действителен с </td>
-                                    <td><input type="date" th:field="*{signDateStart}" readonly></td>
+                                    <td><input type="text" th:field="*{signDateStart}" readonly></td>
                                     <td> до </td>
-                                    <td><input type="date" th:field="*{signDateEnd}" readonly></td>
+                                    <td><input type="text" th:field="*{signDateEnd}" readonly></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4"><input type="checkbox" th:field="*{drawLogo}" checked="checked"> Рисовать герб</td>
@@ -112,7 +112,7 @@
                                     <td class="templates_table_data" th:text="${template.signDateStart}"></td>
                                     <td class="templates_table_data" th:text="${template.signDateEnd}"></td>
 
-                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Выбрать" th:href="@{'/sign/create?index=' + ${templateStat.index}}"></a></div></td>
+                                    <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Выбрать" th:href="@{'/sign/createRuToken?index=' + ${templateStat.index}}"></a></div></td>
                                 </tr>
                             </table>
 

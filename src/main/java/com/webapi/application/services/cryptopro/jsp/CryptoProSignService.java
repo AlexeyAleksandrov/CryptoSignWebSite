@@ -44,7 +44,7 @@ public class CryptoProSignService
         // если пусто
         if(certificates == null)
         {
-            return new CryptoPROCertificateModel();
+            return null;
         }
 
         // перебираем все сертификаты
@@ -58,7 +58,7 @@ public class CryptoProSignService
         }
 
         // если ничего не нашлось
-        return new CryptoPROCertificateModel();
+        return null;
     }
 
     /** Функция создания подписи к файлу

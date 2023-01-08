@@ -66,24 +66,6 @@ public class SignServiceController
                 {
                     createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
                 }
-
-//                // подгружаем с токена
-//                List<CryptoPROCertificateModel> certificates = cryptoProSignService.getCertificates();
-//
-//                for (CryptoPROCertificateModel cert : certificates)
-//                {
-//                    SignTemplateModel signTemplateModel = new SignTemplateModel();
-//                    signTemplateModel.setTemplateName(cert.getCertificateName());
-//                    signTemplateModel.setSignCertificate(cert.getCertificateSerialNumber());
-//                    signTemplateModel.setSignOwner(cert.getSurname() + " " + cert.getNameAndPatronymic());
-//                    signTemplateModel.setSignOwner(cert.getOwner());
-//                    signTemplateModel.setSignDateStart(cert.getValidFrom().toString());
-//                    signTemplateModel.setSignDateEnd(cert.getValidTo().toString());
-//
-//                    signTemplateModels.add(signTemplateModel);
-//                }
-//
-//                model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
             }
         }
 
@@ -109,34 +91,24 @@ public class SignServiceController
 
             if(user != null)    // если пользователь найден
             {
-                // загружаем список шаблонов пользователя
-//                List<SignTemplateModel> signTemplateModels = user.getSignTemplates();   // получаем список шаблонов
-//                model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
-//
-//                if(index >= 0 && index < signTemplateModels.size()) // проверяем границы индекса
-//                {
-//                    createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
-//                }
-
+                // TODO: Сделать выбор между название сертификата и владельцем
+                // TODO: Сделать сохранения состояния галочек, при переключении сертификатов
                 // подгружаем с токена
                 List<CryptoPROCertificateModel> certificates = cryptoProSignService.getCertificates();
                 List<RuTokenSignModel> ruTokenSignModels = new ArrayList<>();
 
+                // преобразовываем сертификаты в модели
                 for (CryptoPROCertificateModel cert : certificates)
                 {
                     ruTokenSignModels.add(RuTokenSignModel.fromCryptoPROCertificateModel(cert));
-//                    SignTemplateModel signTemplateModel = new SignTemplateModel();
-//                    signTemplateModel.setTemplateName(cert.getCertificateName());
-//                    signTemplateModel.setSignCertificate(cert.getCertificateSerialNumber());
-//                    signTemplateModel.setSignOwner(cert.getSurname() + " " + cert.getNameAndPatronymic());
-//                    signTemplateModel.setSignOwner(cert.getOwner());
-//                    signTemplateModel.setSignDateStart(cert.getValidFrom().toString());
-//                    signTemplateModel.setSignDateEnd(cert.getValidTo().toString());
-//
-//                    signTemplateModels.add(signTemplateModel);
                 }
 
-                if(ruTokenSignModels.size() > 0)
+                // устанавливаем выбранный сертификат
+                if(index >= 0 && index < ruTokenSignModels.size())
+                {
+                    createSignFormModel = CreateSignFormModel.fromRuTokenModel(ruTokenSignModels.get(index));
+                }
+                else if(ruTokenSignModels.size() > 0)   // если сертификат не выбран
                 {
                     createSignFormModel = CreateSignFormModel.fromRuTokenModel(ruTokenSignModels.get(0));
                 }
@@ -164,12 +136,36 @@ public class SignServiceController
     // TODO: Сделать загрузку не одного, а несколько файлов
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel)
+    String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel, Authentication authentication)
     {
         if(createSignFormModel == null)
         {
             return "redirect:/sign/create";
         }   // TODO: Сделать стилизацию input с файлами, шаблон -> https://snipp.ru/html-css/input-file-style
+
+        if(authentication == null)  // если пользователь не авторизован
+        {
+            return "redirect:/auth";
+        }
+
+        // получаем пользователя
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = usersRepository.findByUsername(userDetails.getUsername()).orElse(null); // получаем пользователя
+
+        if (user == null)    // если пользователь не найден
+        {
+            return "redirect:/auth";
+        }
+
+        // TODO: Связать пользователя с доступными ему сертификатами
+        // TODO: Сделать перезагрузку списка сертификатов
+
+        CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+        if(cert == null)
+        {
+            return "Error! Сертификат не найден!";
+        }
+
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         final String currentDir = System.getProperty("user.dir");
         String fileName = currentDir + "/uploadedfiles/" + createSignFormModel.getFile().getOriginalFilename();   // получаем оригинальное название файла, который был загружен
@@ -252,8 +248,8 @@ public class SignServiceController
 
                 // создаём подпись
                 String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
-                CryptoPROCertificateModel sert = cryptoProSignService.getCertificates().get(4);
-                cryptoProSignService.createSign(fileForSignName, sert, "12345678", true);
+//                CryptoPROCertificateModel sert = cryptoProSignService.getCertificates().get(4);
+                cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);
 
                 return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
             }
