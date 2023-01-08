@@ -166,6 +166,11 @@ public class SignServiceController
             return "Error! Сертификат не найден!";
         }
 
+        if(createSignFormModel.getDisplayNameType() == 1)   // если вместо владельца сертификата, нужно использовать его название
+        {
+            createSignFormModel.setSignOwner(cert.getCertificateName());    // заменяем владельца на название
+        }
+
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         final String currentDir = System.getProperty("user.dir");
         String fileName = currentDir + "/uploadedfiles/" + createSignFormModel.getFile().getOriginalFilename();   // получаем оригинальное название файла, который был загружен

@@ -44,6 +44,12 @@
                                     <td colspan="3"><input type="file" th:field="*{file}"></td>
                                 </tr>
                                 <tr>
+                                    <td>Отображаемое имя: </td>
+                                    <td><label><input type="radio" th:field="*{displayNameType}" value="0"> Владелец</label></td>
+                                    <td></td>
+                                    <td><label><input type="radio" th:field="*{displayNameType}" value="1"> Название</label></td>
+                                </tr>
+                                <tr>
                                     <td>Владелец: </td>
                                     <td colspan="3"><input type="text" th:field="*{signOwner}" readonly></td>
                                 </tr>

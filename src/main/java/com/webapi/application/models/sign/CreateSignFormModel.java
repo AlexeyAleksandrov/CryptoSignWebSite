@@ -19,6 +19,7 @@ public class CreateSignFormModel
     private boolean checkTransitionToNewPage;   // флаг проверки перехода на новую страницу
     private int insertType; // тип вставки (0 - классический, 1 - по координатам, 2 - по тэгу)
     private MultipartFile file; // передаваемый файл
+    private int displayNameType = 0;    // 0 - владелец, 1 - название
 
     @Override
     public String toString()
