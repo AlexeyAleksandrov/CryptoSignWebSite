@@ -25,7 +25,8 @@ public class MainPageController
         {
             model.addAttribute("notlogin", true);
         }
-        return "home/mainpage";
+//        return "home/mainpage";
+        return "home/main_index";
     }
 
     @GetMapping(value = "/mainIndex")

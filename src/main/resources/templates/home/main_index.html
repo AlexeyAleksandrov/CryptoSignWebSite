@@ -4,7 +4,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Telephasic by HTML5 UP</title>
 		<meta charset="utf-8" />
@@ -43,9 +43,12 @@
 											<li><a href="#">Veroeros feugiat</a></li>
 										</ul>
 									</li>
-									<li><a href="left-sidebar.html">Не придумал</a></li>
-									<li class="break"><a href="right-sidebar.html">Авторизация</a></li>
-									<li><a href="no-sidebar.html">Регистрация</a></li>
+									<li><a href="/">Не придумал</a></li>
+									<li class="break"><a href="/"><br/></a></li>		<!-- оно тут просто, чтобы было, иначе ломается-->
+									<li th:if="${notlogin}" class="break"><a th:href="@{/login}">Авторизация</a></li>
+									<li th:if="${notlogin}"><a th:href="@{/signup}">Регистрация</a></li>
+									<li th:if="${login}" class="break"><a href="/" th:text="${login}">Имя пользователя</a></li>
+									<li th:if="${login}"><a href="/logout">Выйти</a></li>
 								</ul>
 							</nav>
 
@@ -70,6 +73,7 @@
 						<div class="row">
 							<section class="col-6 col-12-narrower feature">
 								<div class="image-wrapper first">
+<!--									TODO: Добавить картинку с примером подписи -->
 									<a href="#" class="image featured first"><img src="images/pic01.jpg" alt="" /></a>
 									<a href="#" class="image featured first"><img src="/static/images/pic01.jpg" alt="" /></a>
 								</div>
@@ -86,6 +90,7 @@
 							</section>
 							<section class="col-6 col-12-narrower feature">
 								<div class="image-wrapper">
+<!--									TODO: Добавить картинку с подписью по тегу -->
 									<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
 									<a href="#" class="image featured"><img src="/static/images/pic02.jpg" alt="" /></a>
 								</div>
@@ -107,6 +112,7 @@
 			<!-- Promo -->
 				<div id="promo-wrapper">
 					<section id="promo">
+<!--						TODO: Подумать над дизайном флешки РуТокен -->
 						<h2>Используйте РуТокен для подписи документов</h2>
 						<a href="#" class="button">Подписать документ</a>
 					</section>
@@ -116,35 +122,45 @@
 				<div class="wrapper">
 					<section class="container">
 						<header class="major">
-							<h2>Sed magna consequat lorem curabitur tempus</h2>
-							<p>Elit aliquam vulputate egestas euismod nunc semper vehicula lorem blandit</p>
+							<h2>А также попробуйте оффлайн версию, работающую без подключения к интернету!</h2>
+<!--							Надпись красного цвета -->
+<!--							<p>Elit aliquam vulputate egestas euismod nunc semper vehicula lorem blandit</p>-->
 						</header>
 						<div class="row features">
 							<section class="col-4 col-12-narrower feature">
 								<div class="image-wrapper first">
+<!--									TODO: Добавить лого Windows -->
 									<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
 								</div>
-								<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur
-								vel sem sit dolor neque semper magna lorem ipsum.</p>
+								<p>Версия для Windows x64:</p>
+								<ul class="actions major">
+									<li><a href="#" class="button">Скачать *.exe</a></li>
+								</ul>
 							</section>
 							<section class="col-4 col-12-narrower feature">
 								<div class="image-wrapper">
+<!--									TODO: Добавить лого Ubuntu -->
 									<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
 								</div>
-								<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur
-								vel sem sit dolor neque semper magna lorem ipsum.</p>
+								<p>Версия для Ubuntu x64:</p>
+								<ul class="actions major">
+									<li><a href="#" class="button">Скачать *.tar.gz</a></li>
+								</ul>
 							</section>
 							<section class="col-4 col-12-narrower feature">
 								<div class="image-wrapper">
+<!--									TODO: Добавить лого Astra Linux -->
 									<a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
 								</div>
-								<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur
-								vel sem sit dolor neque semper magna lorem ipsum.</p>
+								<p>Версия для Astra Linux x64:</p>
+								<ul class="actions major">
+									<li><a href="#" class="button">Скачать *.deb</a></li>
+								</ul>
 							</section>
 						</div>
-						<ul class="actions major">
-							<li><a href="#" class="button">Elevate my awareness</a></li>
-						</ul>
+<!--						<ul class="actions major">-->
+<!--							<li><a href="#" class="button">Elevate my awareness</a></li>-->
+<!--						</ul>-->
 					</section>
 				</div>
 
