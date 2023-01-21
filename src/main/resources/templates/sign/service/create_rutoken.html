@@ -89,6 +89,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <input type="hidden" th:field="*{template}">
                         </form>
                     </fieldset>
                 </td>
@@ -121,8 +122,18 @@
                                     <td class="templates_table_data"><div class="templates_button_div"><a class="templates_button_a" th:text="Выбрать" th:href="@{'/sign/createRuToken?index=' + ${templateStat.index}}"></a></div></td>
                                 </tr>
                             </table>
-
                         </div>
+                        <p>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="templates_button_div">
+                                            <a class="templates_button_a" th:href="@{/sign/create/}">Использовать Шаблоны</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p>
                     </fieldset>
                 </td>
             </tr>

@@ -83,6 +83,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <input type="hidden" th:field="*{template}">
                         </form>
                     </fieldset>
                 </td>
@@ -132,6 +133,11 @@
                                         <td>
                                             <div class="templates_button_div">
                                                 <a class="templates_button_a" th:href="@{/templates/delete}">Удалить шаблон</a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="templates_button_div">
+                                                <a class="templates_button_a" th:href="@{/sign/createRuToken/}">Использовать РуТокен</a>
                                             </div>
                                         </td>
                                     </tr>

@@ -74,6 +74,8 @@ public class SignServiceController
             createSignFormModel = new CreateSignFormModel();
         }
 
+        createSignFormModel.setTemplate(true);  // задаем статус, что это шаблон
+
         model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
         return "sign/service/create";
     }
@@ -122,6 +124,8 @@ public class SignServiceController
             createSignFormModel = new CreateSignFormModel();
         }
 
+        createSignFormModel.setTemplate(false);  // задаем статус, что это не шаблон
+
         model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
         return "sign/service/create_rutoken";
     }
@@ -157,18 +161,25 @@ public class SignServiceController
             return "redirect:/auth";
         }
 
-        // TODO: Связать пользователя с доступными ему сертификатами
-        // TODO: Сделать перезагрузку списка сертификатов
-
-        CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
-        if(cert == null)
+        if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
         {
-            return "Error! Сертификат не найден!";
+
         }
-
-        if(createSignFormModel.getDisplayNameType() == 1)   // если вместо владельца сертификата, нужно использовать его название
+        else    // если мы работаем с реальной подписью
         {
-            createSignFormModel.setSignOwner(cert.getCertificateName());    // заменяем владельца на название
+            // TODO: Связать пользователя с доступными ему сертификатами
+            // TODO: Сделать перезагрузку списка сертификатов
+
+            CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+            if(cert == null)
+            {
+                return "Error! Сертификат не найден!";
+            }
+
+            if(createSignFormModel.getDisplayNameType() == 1)   // если вместо владельца сертификата, нужно использовать его название
+            {
+                createSignFormModel.setSignOwner(cert.getCertificateName());    // заменяем владельца на название
+            }
         }
 
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
@@ -251,12 +262,19 @@ public class SignServiceController
                 documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
                 outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
 
-                // создаём подпись
-                String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
-//                CryptoPROCertificateModel sert = cryptoProSignService.getCertificates().get(4);
-                cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);
+                if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
+                {
+                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
+                }
+                else    // если мы работаем с реальной подписью
+                {
+                    // создаём подпись
+                    String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
+                    CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+                    cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
 
-                return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+                }
             }
             catch (Exception e)
             {
