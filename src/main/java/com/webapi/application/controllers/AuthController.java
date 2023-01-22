@@ -41,7 +41,7 @@ public class AuthController
     public String loginPage(Model model)
     {
         model.addAttribute("form", new LoginForm());
-        return "auth/login";
+        return "auth/login_new";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -50,19 +50,19 @@ public class AuthController
         if(loginForm.getLogin().length() == 0)  // если не указан логин
         {
             model.addAttribute("UserNotFound", true);
-            return "auth/login";
+            return "auth/login_new";
         }
         if(loginForm.getPassword().length() == 0)  // если не указан пароль
         {
             model.addAttribute("UserNotFound", true);
-            return "auth/login";
+            return "auth/login_new";
         }
 
         User user = usersRepository.findByUsername(loginForm.getLogin()).orElse(null);
         if(user == null)    // если пользователя с таким именем нет
         {
             model.addAttribute("UserNotFound", true);
-            return "auth/login";
+            return "auth/login_new";
         }
 
         try
@@ -75,12 +75,12 @@ public class AuthController
             if(e.getMessage().equals("Неверные учетные данные пользователя"))
             {
                 model.addAttribute("PasswordError", true);
-                return "auth/login";
+                return "auth/login_new";
             }
             else
             {
                 e.printStackTrace();
-                return "auth/login";
+                return "auth/login_new";
             }
         }
     }
