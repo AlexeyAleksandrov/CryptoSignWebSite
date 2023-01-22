@@ -103,7 +103,7 @@ public class AuthController
     public String registration(Model model)
     {
         model.addAttribute("registerForm", new SignUpUserForm());
-        return "auth/registration";
+        return "auth/registration_new";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
@@ -132,7 +132,7 @@ public class AuthController
         if(error)
         {
             model.addAttribute("registerForm", signUpUserForm);
-            return "auth/registration";
+            return "auth/registration_new";
         }
         else
         {
@@ -140,7 +140,7 @@ public class AuthController
             {
                 model.addAttribute("userExists", true);
                 model.addAttribute("registerForm", signUpUserForm);
-                return "auth/registration";
+                return "auth/registration_new";
             }
             else
             {

@@ -58,33 +58,33 @@
 				<div class="wrapper">
 					<div class="container" id="main">
 						<article>
-								<form th:action="@{/login}" method="post" th:object="${form}">
+							<form th:action="@{/signup}" th:object="${registerForm}" method="post" >
 									<header>
-										<h2>Авторизация</h2>
+										<h2>Регистрация пользователя</h2>
 <!--											Логин -->
 										<label for="username">
 											<h3>Логин:</h3>
-											<input type="text" th:field="*{login}" id="username" placeholder="Логин">
+											<input type="text" th:field="${registerForm.username}" id="username">
 										</label>
-										<p th:if="${UserNotFound}">
-											Пользователь с таким логином не найден
-										</p>
+										<p th:if="${loginError}" th:text="${loginError}">Ошибка логина</p>
+										<p th:if="${userExists}">Пользователь с данным именем уже существует!</p>
+
 <!--											Пароль -->
-										<label for="password">
+										<label for="password_first">
 											<h3>Пароль:</h3>
-											<input type="password" th:field="*{password}" id="password" placeholder="Пароль">
+											<input type="password" th:field="${registerForm.password}" id="password_first">
 										</label>
-										<p th:if="${PasswordError}">
-											Пароль не верный
-										</p>
-										<p th:if="${param.error}">
-											Пароль не верный, или пользователя с таким именем не существует
-										</p>
+										<p th:if="${passwordError}" th:text="${loginError}">Ошибка пароля</p>
+										<label for="password_second">
+											<h3>Повтор пароля:</h3>
+											<input type="password" th:field="${registerForm.confirm_password}" id="password_second">
+										</label>
+										<p th:if="${passwordNotConfirm}">Пароли не совпадают</p>
 									</header>
 									<div class="col-12">
 										<ul class="actions">
-											<li><input type="submit" value="Войти" /></li>
-											<li><a th:href="@{/signup}" class="button">Зарегистрироваться</a></li>
+											<li><input type="submit" value="Зарегистрироваться" /></li>
+											<li><a th:href="@{/login}" class="button">Авторизация с паролем</a></li>
 										</ul>
 									</div>
 								</form>
