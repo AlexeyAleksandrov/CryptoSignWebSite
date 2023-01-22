@@ -77,7 +77,7 @@ public class SignServiceController
         createSignFormModel.setTemplate(true);  // задаем статус, что это шаблон
 
         model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
-        return "sign/service/create";
+        return "sign/service/create_from_template";
     }
 
     @RequestMapping(value = "/createRuToken", method = RequestMethod.GET)
