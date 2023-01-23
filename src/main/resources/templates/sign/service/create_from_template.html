@@ -91,6 +91,7 @@
 													<li><a th:href="@{/sign/createRuToken/}" class="button">Использовать РуТокен</a></li>
 												</ul>
 											</div>
+											<input type="hidden" th:field="*{template}">
 										</form>
 									</article>
 
@@ -100,28 +101,46 @@
 								<!-- Sidebar -->
 									<section id="sidebar">
 										<section>
+											<p><h3>Шаблоны подписи</h3></p>
+											<div class="col-12">
+												<ul class="actions">
+													<li><a class="button" th:href="@{/templates/create}">Создать</a></li>
+													<li><a class="button" th:href="@{/templates/delete}">Удалить</a></li>
+												</ul>
+											</div>
+										</section>
+										<section th:each="template: ${signTemplateModels}">
 											<header>
-												<h3>Elit sed feugiat</h3>
+												<h3 th:text="${template.templateName}">Название шаблона</h3>
 											</header>
-											<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur et vel
-											sem sit amet dolor neque semper magna. Lorem ipsum dolor sit amet consectetur et dolore
-											adipiscing elit. Curabitur vel sem sit.</p>
+											<p>
+												<div><span th:text="${'Владелец: ' + template.signOwner}">Владелец:</span><br></div>
+												<div><span th:text="${'Сертификат: ' + template.signCertificate}">Сертификат:</span><br></div>
+												<div><span th:text="${'Действителен с ' + template.signDateStart + ' до ' + template.signDateEnd}">Действителен с - до -</span><br></div>
+												<div th:if="${template.drawLogo == true}"><span>Рисовать герб: Да</span><br></div>
+												<div th:if="${template.drawLogo == false}"><span>Рисовать герб: Нет</span><br></div>
+												<div th:if="${template.checkTransitionToNewPage == true}"><span>Переход на новую страницу: Да</span><br></div>
+												<div th:if="${template.checkTransitionToNewPage == false}"><span>Переход на новую страницу: Нет</span><br></div>
+												<div th:if="${template.insertType == 0}"><span>Тип вставки: В конец документа</span><br></div>
+												<div th:if="${template.insertType == 2}"><span>Тип вставки: По тэгу</span><br></div>
+											</p>
 											<ul class="actions">
-												<li><a href="#" class="button">Magna amet nullam</a></li>
+												<li><a th:href="@{'/sign/create?index=' + ${templateStat.index}}" class="button">Выбрать</a></li>
+												<li><a th:href="@{'/templates/edit/' + ${templateStat.index}}" class="button">Изменить</a></li>
 											</ul>
 										</section>
-										<section>
-											<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
-											<header>
-												<h3>Commodo lorem varius</h3>
-											</header>
-											<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur et vel
-											sem sit amet dolor neque semper magna. Lorem ipsum dolor sit amet consectetur et dolore
-											adipiscing elit. Curabitur vel sem sit.</p>
-											<ul class="actions">
-												<li><a href="#" class="button">Ipsum sed dolor</a></li>
-											</ul>
-										</section>
+<!--										<section>-->
+<!--											<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>-->
+<!--											<header>-->
+<!--												<h3>Commodo lorem varius</h3>-->
+<!--											</header>-->
+<!--											<p>Lorem ipsum dolor sit amet consectetur et sed adipiscing elit. Curabitur et vel-->
+<!--											sem sit amet dolor neque semper magna. Lorem ipsum dolor sit amet consectetur et dolore-->
+<!--											adipiscing elit. Curabitur vel sem sit.</p>-->
+<!--											<ul class="actions">-->
+<!--												<li><a href="#" class="button">Ipsum sed dolor</a></li>-->
+<!--											</ul>-->
+<!--										</section>-->
 									</section>
 
 							</div>
