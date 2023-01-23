@@ -58,6 +58,8 @@ public class SignServiceController
 
             if(user != null)    // если пользователь найден
             {
+                model.addAttribute("login", user.getUsername());    // добавляем имя пользователя
+
                 // загружаем список шаблонов пользователя
                 List<SignTemplateModel> signTemplateModels = user.getSignTemplates();   // получаем список шаблонов
                 model.addAttribute("signTemplateModels", signTemplateModels);   // отправляем список шаблонов
@@ -67,6 +69,10 @@ public class SignServiceController
                     createSignFormModel = signTemplateModels.get(index).toCreateSignFormModel();    // применяем выбранный шаблон
                 }
             }
+        }
+        else
+        {
+            return "redirect:/auth";
         }
 
         if(createSignFormModel == null)   // если модель не была добавлена

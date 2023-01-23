@@ -6,7 +6,7 @@
 -->
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Telephasic by HTML5 UP</title>
+		<title>Crypto Sign Service: Создание подписи на основе шаблона</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" th:href="@{/css/index/main_index.css}" />
@@ -45,8 +45,8 @@
 								</li>
 								<li><a href="/">Не придумал</a></li>
 								<li class="break"><a href="/"><br/></a></li>		<!-- оно тут просто, чтобы было, иначе ломается-->
-								<li class="break"><a th:href="@{/}">Главная</a></li>
-								<li><a th:href="@{/logout}">Выйти</a></li>
+								<li class="break"><a href="/" th:text="${login}">Имя пользователя</a></li>
+								<li><a href="/logout">Выйти</a></li>
 							</ul>
 						</nav>
 
