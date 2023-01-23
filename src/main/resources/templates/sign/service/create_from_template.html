@@ -71,10 +71,10 @@
 											<p>Сертификат: <input type="text" th:field="*{signCertificate}"></p>
 											<p>Действителен с <input type="date" th:field="*{signDateStart}" > до <input type="date" th:field="*{signDateEnd}"></p>
 											<p>
-												<input type="checkbox" class="custom-checkbox" th:field="*{drawLogo}" id="drawLogo">
+												<input type="checkbox" class="custom-checkbox" th:checked="*{drawLogo}" name="drawLogo" id="drawLogo">
 												<label for="drawLogo">Рисовать герб</label>
 												<br>
-												<input type="checkbox" class="custom-checkbox" th:field="*{checkTransitionToNewPage}" id="checkTransitionToNewPage">
+												<input type="checkbox" class="custom-checkbox" th:checked="*{checkTransitionToNewPage}" id="checkTransitionToNewPage" name="checkTransitionToNewPage">
 												<label for="checkTransitionToNewPage">Игнорировать переход на новую страницу</label>
 											</p>
 											<p>
@@ -251,6 +251,13 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+
+			<script src="/static/js/jquery.min.js"></script>
+			<script src="/static/js/jquery.dropotron.min.js"></script>
+			<script src="/static/js/browser.min.js"></script>
+			<script src="/static/js/breakpoints.min.js"></script>
+			<script src="/static/js/util.js"></script>
+			<script src="/static/js/main.js"></script>
 
 	</body>
 </html>
