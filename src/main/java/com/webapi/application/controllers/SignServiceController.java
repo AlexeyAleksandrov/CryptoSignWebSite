@@ -99,8 +99,11 @@ public class SignServiceController
 
             if(user != null)    // если пользователь найден
             {
+                model.addAttribute("login", user.getUsername());    // добавляем имя пользователя
+
                 // TODO: Сделать выбор между название сертификата и владельцем
                 // TODO: Сделать сохранения состояния галочек, при переключении сертификатов
+
                 // подгружаем с токена
                 List<CryptoPROCertificateModel> certificates = cryptoProSignService.getCertificates();
                 List<RuTokenSignModel> ruTokenSignModels = new ArrayList<>();
@@ -124,6 +127,10 @@ public class SignServiceController
                 model.addAttribute("ruTokenSignModels", ruTokenSignModels);   // отправляем список шаблонов
             }
         }
+        else
+        {
+            return "redirect:/auth";
+        }
 
         if(createSignFormModel == null)   // если модель не была добавлена
         {
@@ -133,7 +140,7 @@ public class SignServiceController
         createSignFormModel.setTemplate(false);  // задаем статус, что это не шаблон
 
         model.addAttribute("signModel", createSignFormModel);   // передаём данные для заполнения на форму
-        return "sign/service/create_rutoken";
+        return "sign/service/create_from_rutoken";
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
@@ -274,12 +281,19 @@ public class SignServiceController
                 }
                 else    // если мы работаем с реальной подписью
                 {
-                    // создаём подпись
-                    String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
-                    CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
-                    cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
+                    try
+                    {
+                        // создаём подпись
+                        String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
+                        CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+                        cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
 
-                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+                        return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+                    }
+                    catch (java.security.ProviderException providerException)   // ошибка лицензии
+                    {
+                        return "Error! Ошибка КриптоПРО JSP: " + providerException.getMessage();
+                    }
                 }
             }
             catch (Exception e)

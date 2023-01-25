@@ -4,6 +4,10 @@ import com.webapi.application.models.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Table(name = "sign_templates")
@@ -68,5 +72,41 @@ public class SignTemplateModel
         this.drawLogo = model.drawLogo;
         this.checkTransitionToNewPage = model.checkTransitionToNewPage;
         this.insertType = model.insertType;
+    }
+
+    /** Функция преобразования даты в формате представления для HTML формы в формат для документов
+     * @param dateString исходная строка даты в формате yyyy-MM-dd
+     * @return дата в формате dd.MM.yyyy
+     */
+    private String getDateStartInDocumentFormat(String dateString)
+    {
+        DateFormat dateFormFormat = new SimpleDateFormat("yyyy-MM-dd");     // форматер исходной строки
+        DateFormat dateDocumentFormat = new SimpleDateFormat("dd.MM.yyyy"); // форматер конечной строки
+        try
+        {
+            Date date = dateFormFormat.parse(dateString);   // получаем дату из исходной строки
+            return dateDocumentFormat.format(date);     // возвращаем отформатированную дату
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+            return dateString;      // в случае ошибки, возвращаем ту же самую строку
+        }
+    }
+
+    /**
+     * @return Преобразовывает дату из yyyy-MM-dd в dd.MM.yyyy
+     */
+    public String getSignDateStartInDocumentFormat()
+    {
+        return getDateStartInDocumentFormat(signDateStart);
+    }
+
+    /**
+     * @return Преобразовывает дату из yyyy-MM-dd в dd.MM.yyyy
+     */
+    public String getSignDateEndInDocumentFormat()
+    {
+        return getDateStartInDocumentFormat(signDateEnd);
     }
 }

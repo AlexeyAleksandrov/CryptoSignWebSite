@@ -67,9 +67,13 @@
 <!--										<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>-->
 										<form method="POST" enctype="multipart/form-data" th:action="@{/sign/upload}" th:object="${signModel}">
 											<p>Документ: <input type="file" th:field="*{file}"></p>
-											<p>Владелец: <input type="text" th:field="*{signOwner}"></p>
-											<p>Сертификат: <input type="text" th:field="*{signCertificate}"></p>
-											<p>Действителен с <input type="date" th:field="*{signDateStart}" th:value="*{signDateStart}" > до <input type="date" th:field="*{signDateEnd}"></p>
+											<input type="radio" th:field="*{displayNameType}" value="0" id="displayNameType_owner" class="custom-radio">
+											<label for="displayNameType_owner"> Владелец</label>
+											<input type="radio" th:field="*{displayNameType}" value="1" id="displayNameType_subname" class="custom-radio">
+											<label for="displayNameType_subname"> Название</label>
+											<p>Владелец: <input type="text" th:field="*{signOwner}" readonly></p>
+											<p>Сертификат: <input type="text" th:field="*{signCertificate}" readonly></p>
+											<p>Действителен с <input type="date" th:field="*{signDateStart}" readonly> до <input type="date" th:field="*{signDateEnd}" readonly></p>
 											<p>
 												<input type="checkbox" class="custom-checkbox" th:checked="*{drawLogo}" name="drawLogo" id="drawLogo">
 												<label for="drawLogo">Рисовать герб</label>
@@ -88,7 +92,7 @@
 											<div class="col-12">
 												<ul class="actions">
 													<li><input type="submit" value="Подписать" /></li>
-													<li><a th:href="@{/sign/createRuToken/}" class="button">Использовать РуТокен</a></li>
+													<li><a th:href="@{/sign/create/}" class="button">Использовать Шаблоны</a></li>
 												</ul>
 											</div>
 											<input type="hidden" th:field="*{template}">
@@ -101,32 +105,24 @@
 								<!-- Sidebar -->
 									<section id="sidebar">
 										<section>
-											<p><h3>Шаблоны подписи</h3></p>
-											<div class="col-12">
-												<ul class="actions">
-													<li><a class="button" th:href="@{/templates/create}">Создать</a></li>
-													<li><a class="button" th:href="@{/templates/delete}">Удалить</a></li>
-												</ul>
-											</div>
+											<p><h3>Доступные сертификаты</h3></p>
 										</section>
-										<section th:each="template: ${signTemplateModels}">
+										<section th:if="${ruTokenSignModels.size() == 0}">
 											<header>
-												<h3 th:text="${template.templateName}">Название шаблона</h3>
+												<p>Ошибка: Сертификаты не найдены!</p>
+											</header>
+										</section>
+										<section th:each="template: ${ruTokenSignModels}">
+											<header>
+												<h3 th:text="${template.certificateName}">Название шаблона</h3>
 											</header>
 											<p>
 												<div><span th:text="${'Владелец: ' + template.signOwner}">Владелец:</span><br></div>
 												<div><span th:text="${'Сертификат: ' + template.signCertificate}">Сертификат:</span><br></div>
 												<div><span th:text="${'Действителен с ' + template.getSignDateStartInDocumentFormat() + ' до ' + template.getSignDateEndInDocumentFormat()}">Действителен с - до -</span><br></div>
-												<div th:if="${template.drawLogo == true}"><span>Рисовать герб: Да</span><br></div>
-												<div th:if="${template.drawLogo == false}"><span>Рисовать герб: Нет</span><br></div>
-												<div th:if="${template.checkTransitionToNewPage == true}"><span>Переход на новую страницу: Да</span><br></div>
-												<div th:if="${template.checkTransitionToNewPage == false}"><span>Переход на новую страницу: Нет</span><br></div>
-												<div th:if="${template.insertType == 0}"><span>Тип вставки: В конец документа</span><br></div>
-												<div th:if="${template.insertType == 2}"><span>Тип вставки: По тэгу</span><br></div>
 											</p>
 											<ul class="actions">
-												<li><a th:href="@{'/sign/create?index=' + ${templateStat.index}}" class="button">Выбрать</a></li>
-												<li><a th:href="@{'/templates/edit/' + ${templateStat.index}}" class="button">Изменить</a></li>
+												<li><a th:href="@{'/sign/createRuToken?index=' + ${templateStat.index}}" class="button">Выбрать</a></li>
 											</ul>
 										</section>
 <!--										<section>-->
