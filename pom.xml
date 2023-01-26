@@ -176,6 +176,13 @@
             <version>5.0.40363-A</version>
         </dependency>
 
+<!--        Для сохранения сессии в БД-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session-jdbc -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

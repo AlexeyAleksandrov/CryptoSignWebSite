@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
                 .formLogin()    // настраиваем страницу авторизации
                 .loginPage("/authlogin").permitAll()    // разрешаем все запросы к странице авторизации
                 .defaultSuccessUrl("/") // по умолчанию перенаправляем на главную страницу
+                .and()
+                .rememberMe()   //  делаем возврат пользователя по сохранённой сессии
                 .and()
                 .logout()   // настраиваем выход из аккаунта
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST")) // чтобы выйти из аккаунта, надо отправить POST запрос
