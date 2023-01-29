@@ -193,7 +193,7 @@ public class SignServiceController
             {
                 createSignFormModel.setSignOwner(cert.getCertificateName());    // заменяем владельца на название
             }
-        }
+        }   // TODO: Вынести обработку в отдельный поток со списком "task" и JS страница с таймаутом
 
         createSignFormModel.setFileName(createSignFormModel.getFile().getOriginalFilename());
         final String currentDir = System.getProperty("user.dir");

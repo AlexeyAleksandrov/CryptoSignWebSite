@@ -32,7 +32,7 @@ public class SignTemplatesController
         if(authentication == null)
         {
             model.addAttribute("notlogin", true);
-            return "sign/templates/create";
+            return "sign/templates/create_template";
         }
         else
         {
@@ -42,13 +42,13 @@ public class SignTemplatesController
             if(user == null)
             {
                 model.addAttribute("UserNotFound", true);
-                return "sign/templates/create";
+                return "sign/templates/create_template";
             }
             SignTemplateModel signTemplateModel = new SignTemplateModel();
             signTemplateModel.setUser(user);
             model.addAttribute("login", true);
             model.addAttribute("templateModel", signTemplateModel);
-            return "sign/templates/create";
+            return "sign/templates/create_template";
         }
     }
 
@@ -59,7 +59,7 @@ public class SignTemplatesController
         if(authentication == null)
         {
             model.addAttribute("notlogin", true);
-            return "sign/templates/create";
+            return "sign/templates/create_template";
         }
         else
         {
@@ -69,7 +69,7 @@ public class SignTemplatesController
             if(user == null)
             {
                 model.addAttribute("UserNotFound", true);
-                return "sign/templates/create";
+                return "sign/templates/create_template";
             }
 
             // сохраняем данные
