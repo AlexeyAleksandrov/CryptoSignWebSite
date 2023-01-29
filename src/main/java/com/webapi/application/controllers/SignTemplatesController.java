@@ -46,7 +46,7 @@ public class SignTemplatesController
             }
             SignTemplateModel signTemplateModel = new SignTemplateModel();
             signTemplateModel.setUser(user);
-            model.addAttribute("login", true);
+            model.addAttribute("login", user.getUsername());
             model.addAttribute("templateModel", signTemplateModel);
             return "sign/templates/create_template";
         }
@@ -110,7 +110,8 @@ public class SignTemplatesController
                     model.addAttribute("templateIndex", index);
                     model.addAttribute("template", templatesList.get(index));   // задаём редактируемый шаблон
                 }
-                return "sign/templates/edit";
+                model.addAttribute("login", user.getUsername());
+                return "sign/templates/edit_template";
             }
         }
     }
@@ -172,6 +173,7 @@ public class SignTemplatesController
             {
                 List<SignTemplateModel> templatesList = user.getSignTemplates();    // получаем список шаблонов
                 model.addAttribute("signTemplateModels", templatesList);    // отправляем список шаблонов на форму
+                model.addAttribute("login", user.getUsername());    // задаём имя пользователя
 
                 return "sign/templates/delete";
             }
