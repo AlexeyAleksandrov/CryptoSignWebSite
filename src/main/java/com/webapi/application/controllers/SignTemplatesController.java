@@ -175,14 +175,18 @@ public class SignTemplatesController
                 model.addAttribute("signTemplateModels", templatesList);    // отправляем список шаблонов на форму
                 model.addAttribute("login", user.getUsername());    // задаём имя пользователя
 
-                return "sign/templates/delete";
+                return "sign/templates/delete_template";
             }
         }
     }
 
     @PostMapping("/delete")
-    private String delete(@RequestParam("index") int[] indexes, Authentication authentication)
+    private String delete(@RequestParam(value = "index", required = false) int[] indexes, Authentication authentication)
     {
+        if(indexes == null || indexes.length == 0)      // если не выбраны шаблоны для удаления
+        {
+            return "redirect:/sign/create";
+        }
         if(authentication == null)
         {
             return "redirect:/login";
