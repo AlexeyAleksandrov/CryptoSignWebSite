@@ -1,7 +1,6 @@
 package com.webapi.application.controllers;
 
-import com.webapi.application.models.sign.RuTokenSignModel;
-import com.webapi.application.models.sign.SignTemplateModel;
+import com.webapi.application.models.sign.*;
 import com.webapi.application.models.user.User;
 import com.webapi.application.repositories.UsersRepository;
 import com.webapi.application.services.cryptopro.jsp.CryptoPROCertificateModel;
@@ -10,7 +9,6 @@ import com.webapi.application.services.handlers.Excel.ExcelHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.UploadedFileHandler;
 import com.webapi.application.services.handlers.Word.WordHandler;
-import com.webapi.application.models.sign.CreateSignFormModel;
 import com.webapi.application.services.signImage.SignImageCreator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -143,17 +140,16 @@ public class SignServiceController
         return "sign/service/create_from_rutoken";
     }
 
-    @RequestMapping(value = "/upload", method = RequestMethod.GET)
-    public @ResponseBody
-    String provideUploadInfo()
-    {
-        return "Вы можете загружать файл с использованием того же URL.";
-    }
+//    @RequestMapping(value = "/upload", method = RequestMethod.GET)
+//    public @ResponseBody
+//    String provideUploadInfo()
+//    {
+//        return "Вы можете загружать файл с использованием того же URL.";
+//    }
 
     // TODO: Сделать загрузку не одного, а несколько файлов
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public @ResponseBody
-    String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel, Authentication authentication)
+    public String handleFileUpload(@ModelAttribute("signModel") CreateSignFormModel createSignFormModel, Authentication authentication, Model model)
     {
         if(createSignFormModel == null)
         {
@@ -174,11 +170,15 @@ public class SignServiceController
             return "redirect:/auth";
         }
 
-        if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
-        {
+        model.addAttribute("login", user.getUsername());    // добавляем имя пользователя
 
-        }
-        else    // если мы работаем с реальной подписью
+        SignResultDownloadModel resultDownloadModel = new SignResultDownloadModel();    // результат
+        model.addAttribute("result", resultDownloadModel);      // добавляем аттрибут
+
+        resultDownloadModel.setFileName(createSignFormModel.getFile().getOriginalFilename());     // задаем название файла
+        resultDownloadModel.setDigitalSign(false);      // ставим, что цифровой подписи нет
+
+        if (!createSignFormModel.isTemplate()) // если мы работаем с реальной подписью
         {
             // TODO: Связать пользователя с доступными ему сертификатами
             // TODO: Сделать перезагрузку списка сертификатов
@@ -186,7 +186,10 @@ public class SignServiceController
             CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
             if(cert == null)
             {
-                return "Error! Сертификат не найден!";
+                resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_CERTIFICATE_NOT_FOUND);
+                resultDownloadModel.setErrorMessage("Сертификат не найден!");
+                return "sign/service/result_download_document";
+//                return "Error! Сертификат не найден!";
             }
 
             if(createSignFormModel.getDisplayNameType() == 1)   // если вместо владельца сертификата, нужно использовать его название
@@ -204,7 +207,10 @@ public class SignServiceController
                 || (createSignFormModel.getInsertType() == 2
                 && !(fileName.endsWith(".docx") || fileName.endsWith(".doc") || fileName.endsWith(".rtf"))))
         {
-            return "Error! Выбранный тип подписи не подходит для данного типа файлов!";
+            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SUPPORTING_FOR_TAG);
+            resultDownloadModel.setErrorMessage("Выбранный тип подписи не подходит для данного типа файлов!");
+            return "sign/service/result_download_document";
+//            return "Error! Выбранный тип подписи не подходит для данного типа файлов!";
         }
 
         // начинаем обработку файла
@@ -237,7 +243,10 @@ public class SignServiceController
                 // проверка наличия
                 if(!uploadDirCreated || !outputDirCreated || !tempDirCreated)
                 {
-                    return "Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!";
+                    resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+                    resultDownloadModel.setErrorMessage("Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!");
+                    return "sign/service/result_download_document";
+//                    return "Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!";
                 }
 
                 // сохраняем файл на устройстве
@@ -267,7 +276,10 @@ public class SignServiceController
                 }
                 else
                 {
-                    return "Данный тип файлов не поддерживается!";
+                    resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SUPPORTING);
+                    resultDownloadModel.setErrorMessage("Данный тип файлов не поддерживается!");
+                    return "sign/service/result_download_document";
+//                    return "Данный тип файлов не поддерживается!";
                 }
 
                 // обрабатываем полученный файл
@@ -277,7 +289,10 @@ public class SignServiceController
 
                 if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
                 {
-                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
+                    resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
+                    resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
+                    return "sign/service/result_download_document";
+//                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
                 }
                 else    // если мы работаем с реальной подписью
                 {
@@ -288,23 +303,38 @@ public class SignServiceController
                         CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
                         cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
 
-                        return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+                        resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
+                        resultDownloadModel.setDigitalSign(true);      // ставим, что есть цифровая подпись
+                        resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
+                        resultDownloadModel.setSignFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName + ".sig");
+                        return "sign/service/result_download_document";
+//                        return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
                     }
                     catch (java.security.ProviderException providerException)   // ошибка лицензии
                     {
-                        return "Error! Ошибка КриптоПРО JSP: " + providerException.getMessage();
+                        resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_CRYPTO_PRO_EXCEPTION);
+                        resultDownloadModel.setErrorMessage("Ошибка КриптоПРО JSP: " + providerException.getMessage());
+                        return "sign/service/result_download_document";
+//                        return "Error! Ошибка КриптоПРО JSP: " + providerException.getMessage();
                     }
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-                return "Error! Не удалось загрузить " + fileName + " => " + e.getMessage();
+
+                resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+                resultDownloadModel.setErrorMessage("Не удалось загрузить " + fileName + " => " + e.getMessage());
+                return "sign/service/result_download_document";
+//                return "Error! Не удалось загрузить " + fileName + " => " + e.getMessage();
             }
         }
         else
         {
-            return "Error! Не удалось загрузить файл, потому что он пустой.";
+            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+            resultDownloadModel.setErrorMessage("Не удалось загрузить файл, потому что он пустой");
+            return "sign/service/result_download_document";
+//            return "Error! Не удалось загрузить файл, потому что он пустой.";
         }
     }
 

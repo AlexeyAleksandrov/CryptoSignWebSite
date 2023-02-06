@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crypto Sign Service: Создание подписи на основе шаблона</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" th:href="@{/css/index/main_index.css}"/>
+    <link rel="stylesheet" href="/static/css/index/main_index.css"/>
+</head>
+<body class="right-sidebar is-preload">
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        <div id="header-wrapper">
+            <div id="header" class="container">
+
+                <!-- Logo -->
+                <h1 id="logo"><a href="/">Crypto Sign Service</a></h1>
+
+                <!-- Nav -->
+                <nav id="nav">
+                    <ul>
+                        <li>
+                            <a href="#">Выпадающий список</a>
+                            <ul>
+                                <li><a href="#">Lorem ipsum dolor</a></li>
+                                <li><a href="#">Magna phasellus</a></li>
+                                <li><a href="#">Etiam dolore nisl</a></li>
+                                <li>
+                                    <a href="#">Phasellus consequat</a>
+                                    <ul>
+                                        <li><a href="#">Lorem ipsum dolor</a></li>
+                                        <li><a href="#">Phasellus consequat</a></li>
+                                        <li><a href="#">Magna phasellus</a></li>
+                                        <li><a href="#">Etiam dolore nisl</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Veroeros feugiat</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/">Не придумал</a></li>
+                        <li class="break"><a href="/"><br/></a>
+                        </li>        <!-- оно тут просто, чтобы было, иначе ломается-->
+                        <li class="break"><a href="/" th:text="${login}">Имя пользователя</a></li>
+                        <li><a href="/logout">Выйти</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+
+        <!-- Main -->
+        <div class="wrapper">
+            <div class="container" id="main">
+                <div class="row gtr-150">
+                    <div class="col-8 col-12-narrower">
+
+                        <!-- Content -->
+                        <article id="content">
+                            <header>
+                                <h2>Результат подписи</h2>
+                            </header>
+                            <section id="sidebar">
+                                <div th:if="${result.status.isError() == false}">
+                                    <section>
+                                        <p th:text="'Файл ' + ${result.fileName} + ' подписан'">Файл подписан</p>
+                                        <ul class="actions">
+                                            <li><a th:href="@{${result.fileDownloadLink}}" class="button" target="_blank">Скачать документ</a></li>
+                                            <li th:if="${result.isDigitalSign()}"><a th:href="@{${result.signFileDownloadLink}}" class="button" target="_blank">Скачать подпись</a></li>
+                                        </ul>
+                                    </section>
+                                </div>
+                                <div th:if="${result.status.isError() == true}">
+                                    <header>
+                                        <p th:text="${result.errorMessage}">Ошибка подписи</p>
+                                    </header>
+                                </div>
+                            </section>
+                        </article>
+
+                    </div>
+                    <div class="col-4 col-12-narrower">
+
+                        <!-- Sidebar -->
+<!--                        <section id="sidebar">-->
+<!--                            <section>-->
+<!--                                <p>-->
+<!--                                <h3>Доступные сертификаты</h3></p>-->
+<!--                            </section>-->
+<!--                            <section th:if="${ruTokenSignModels.size() == 0}">-->
+<!--                                <header>-->
+<!--                                    <p>Ошибка: Сертификаты не найдены!</p>-->
+<!--                                </header>-->
+<!--                            </section>-->
+<!--                            <section th:each="template: ${ruTokenSignModels}">-->
+<!--                                <header>-->
+<!--                                    <h3 th:text="${template.certificateName}">Название шаблона</h3>-->
+<!--                                </header>-->
+<!--                                <p>-->
+<!--                                <div><span th:text="${'Владелец: ' + template.signOwner}">Владелец:</span>-->
+<!--                                    <br></div>-->
+<!--                                <div><span th:text="${'Сертификат: ' + template.signCertificate}">Сертификат:</span>-->
+<!--                                    <br></div>-->
+<!--                                <div>-->
+<!--                                    <span th:text="${'Действителен с ' + template.getSignDateStartInDocumentFormat() + ' до ' + template.getSignDateEndInDocumentFormat()}">Действителен с - до -</span>-->
+<!--                                    <br></div>-->
+<!--                                </p>-->
+<!--                                <ul class="actions">-->
+<!--                                    <li>-->
+<!--                                        <a th:href="@{'/sign/createRuToken?index=' + ${templateStat.index}}" class="button">Выбрать</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </section>-->
+<!--                        </section>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="copyright" class="container">
+            <ul class="menu">
+                <li>&copy; Untitled. All rights reserved.</li>
+                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.dropotron.min.js"></script>
+    <script src="/static/js/browser.min.js"></script>
+    <script src="/static/js/breakpoints.min.js"></script>
+    <script src="/static/js/util.js"></script>
+    <script src="/static/js/main.js"></script>
+
+</body>
+</html>

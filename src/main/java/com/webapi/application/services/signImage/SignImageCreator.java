@@ -84,8 +84,8 @@ public class SignImageCreator
     {
         String owner = convertParams.getSignOwner();
         String certificate = convertParams.getSignCertificate();
-        String validFrom = convertParams.getSignDateStart();
-        String validTo = convertParams.getSignDateEnd();
+        String validFrom = convertParams.getSignDateStartInDocumentFormat();
+        String validTo = convertParams.getSignDateEndInDocumentFormat();
         boolean drawGerb = convertParams.isDrawLogo();
 
         File file = new File(filePath);
