@@ -96,7 +96,7 @@ public class PDFHandler extends UploadedFileHandler
     @Override
     public String processDocument(String fileName) throws PDFHandlerException, IOException, ExcelHandlerException, WordHandlerException, BootstrapException, Exception
     {
-        String fileNameOutput= currentDir + "output/" + params.getFileName();    // указываю папку вывода
+        String fileNameOutput= currentDir + "/output/" + params.getFileName();    // указываю папку вывода
         processDocument(fileName, fileNameOutput);  // обрабатываю документ
         return params.getFileName();    // возвращаю название исходного файла
     }

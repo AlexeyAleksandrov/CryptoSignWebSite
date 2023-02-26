@@ -42,6 +42,7 @@ public class SignImageCreator
 
     // параметры герба
     private String imageGerbPath = null;     // путь к файлу герба
+    private String imagePath = null;     // путь к файлу герба
     private static final int imageGerbMarginLeft = 20;  // отступ слева для рисования герба
     private static final int imageGerbMarginTop = 10;   // отступ сверху для рисования герба
     private static final int imageGerbWidth = 52;   // ширина герба
@@ -50,6 +51,11 @@ public class SignImageCreator
     public void setImageGerbPath(String imageGerbPath)
     {
         this.imageGerbPath = imageGerbPath;
+    }
+
+    public void setImagePath(String imagePath)
+    {
+        this.imagePath = imagePath;
     }
 
     /**
@@ -119,6 +125,14 @@ public class SignImageCreator
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @see SignImageCreator#createSignImage(String, CreateSignFormModel)
+     */
+    public void createSignImage(CreateSignFormModel convertParams) throws IOException
+    {
+        createSignImage(this.imagePath, convertParams);
     }
 
     // функция рисования текста на изображении

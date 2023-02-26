@@ -2,12 +2,12 @@ package com.webapi.application.services.handlers.Excel;
 
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.uno.Exception;
-import com.webapi.application.controllers.SignServiceController;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandlerException;
 import com.webapi.application.services.handlers.UploadedFileHandler;
 import com.webapi.application.services.handlers.Word.WordHandlerException;
 import com.webapi.application.services.libreoffice.DocumentConverter;
+import com.webapi.application.services.sign.create.queue.service.SignCreateQueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class ExcelHandler  extends UploadedFileHandler
 
     public ExcelHandler()
     {
-        singImagePath = SignServiceController.singImagePath;  // путь к картинке, которую надо вставить
+        singImagePath = SignCreateQueueService.signImagePath;  // путь к картинке, которую надо вставить
     }
 
     @Override

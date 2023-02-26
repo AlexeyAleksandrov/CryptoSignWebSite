@@ -9,6 +9,8 @@ import com.webapi.application.services.handlers.Excel.ExcelHandler;
 import com.webapi.application.services.handlers.PDF.PDFHandler;
 import com.webapi.application.services.handlers.UploadedFileHandler;
 import com.webapi.application.services.handlers.Word.WordHandler;
+import com.webapi.application.services.sign.create.queue.blockingqueue.SignCreateTask;
+import com.webapi.application.services.sign.create.queue.service.SignCreateQueueService;
 import com.webapi.application.services.signImage.SignImageCreator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -30,15 +32,16 @@ import java.util.List;
 @RequestMapping("/sign")
 public class SignServiceController
 {
-    public static final String singImagePath = "temp/sign_image.jpg";   // путь сохранения готового изображения подписи
-    public static final String signImageLogoPath = "logo/mirea_gerb_52_65.png";  // путь к гербу для изображения
+//    public static final String singImagePath = "temp/sign_image.jpg";   // путь сохранения готового изображения подписи
+//    public static final String signImageLogoPath = "logo/mirea_gerb_52_65.png";  // путь к гербу для изображения
 
     // внедрение зависимостей через конструктор
-    final SignImageCreator signImageCreator;    // сервис создания изображения подписи
-    final WordHandler wordHandler;      // обработчик Word документов
-    final ExcelHandler excelHandler;    // обработчик Excel документов
-    final PDFHandler pdfHandler;    // обработчик PDF документов
+//    final SignImageCreator signImageCreator;    // сервис создания изображения подписи
+//    final WordHandler wordHandler;      // обработчик Word документов
+//    final ExcelHandler excelHandler;    // обработчик Excel документов
+//    final PDFHandler pdfHandler;    // обработчик PDF документов
     final CryptoProSignService cryptoProSignService;    // сервис создания подписей
+    final SignCreateQueueService signCreateQueueService;    // сервис очереди задач
 
     // репозитории
     UsersRepository usersRepository;
@@ -213,129 +216,138 @@ public class SignServiceController
 //            return "Error! Выбранный тип подписи не подходит для данного типа файлов!";
         }
 
-        // начинаем обработку файла
-        if (!createSignFormModel.getFile().isEmpty())
-        {
-            try
-            {
-                // проверяем наличие папок для сохранения и вывода
-                boolean uploadDirCreated = true;
-                boolean outputDirCreated = true;
-                boolean tempDirCreated = true;
-
-                File outputDir = new File("output/");   // папка вывода
-                File uploadDir = new File("uploadedfiles/");    // папка сохранения
-                File tempDir = new File("temp/");   // папка для временных данных
-
-                if(!uploadDir.exists())
-                {
-                    uploadDirCreated = uploadDir.mkdir();
-                }
-                if(!outputDir.exists())
-                {
-                    outputDirCreated = outputDir.mkdir();
-                }
-                if(!tempDir.exists())
-                {
-                    tempDirCreated = tempDir.mkdir();
-                }
-
-                // проверка наличия
-                if(!uploadDirCreated || !outputDirCreated || !tempDirCreated)
-                {
-                    resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
-                    resultDownloadModel.setErrorMessage("Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!");
-                    return "sign/service/result_download_document";
-//                    return "Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!";
-                }
-
-                // сохраняем файл на устройстве
-                byte[] bytes = createSignFormModel.getFile().getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
-                stream.write(bytes);
-                stream.close();
-
-                // создаём изображение подписи
-                signImageCreator.setImageGerbPath(signImageLogoPath);       // указываем путь к гербу
-                signImageCreator.createSignImage(singImagePath, createSignFormModel); // создаём изображение подписи
-
-                UploadedFileHandler documentHandler = null; // обработчик документов
-                String outputFileName = null;
-                // определяем тип полученного файла
-                if (fileName.endsWith(".docx") || fileName.endsWith(".doc") || fileName.endsWith(".rtf"))
-                {
-                    documentHandler = wordHandler;
-                }
-                else if (fileName.endsWith(".pdf"))
-                {
-                    documentHandler = pdfHandler;
-                }
-                else if(fileName.endsWith(".xlsx") || fileName.endsWith(".xls"))
-                {
-                    documentHandler = excelHandler;
-                }
-                else
-                {
-                    resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SUPPORTING);
-                    resultDownloadModel.setErrorMessage("Данный тип файлов не поддерживается!");
-                    return "sign/service/result_download_document";
-//                    return "Данный тип файлов не поддерживается!";
-                }
-
-                // обрабатываем полученный файл
-                documentHandler.setSingImagePath(singImagePath); // указываем путь к картинке, которую нужно будет вставить
-                documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
-                outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
-
-                if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
-                {
-                    resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
-                    resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
-                    return "sign/service/result_download_document";
-//                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
-                }
-                else    // если мы работаем с реальной подписью
-                {
-                    try
-                    {
-                        // создаём подпись
-                        String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
-                        CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
-                        cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
-
-                        resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
-                        resultDownloadModel.setDigitalSign(true);      // ставим, что есть цифровая подпись
-                        resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
-                        resultDownloadModel.setSignFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName + ".sig");
-                        return "sign/service/result_download_document";
-//                        return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
-                    }
-                    catch (java.security.ProviderException providerException)   // ошибка лицензии
-                    {
-                        resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_CRYPTO_PRO_EXCEPTION);
-                        resultDownloadModel.setErrorMessage("Ошибка КриптоПРО JSP: " + providerException.getMessage());
-                        return "sign/service/result_download_document";
-//                        return "Error! Ошибка КриптоПРО JSP: " + providerException.getMessage();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-
-                resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
-                resultDownloadModel.setErrorMessage("Не удалось загрузить " + fileName + " => " + e.getMessage());
-                return "sign/service/result_download_document";
-//                return "Error! Не удалось загрузить " + fileName + " => " + e.getMessage();
-            }
-        }
-        else
+        // проверяем файл
+        if (createSignFormModel.getFile().isEmpty())
         {
             resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
             resultDownloadModel.setErrorMessage("Не удалось загрузить файл, потому что он пустой");
             return "sign/service/result_download_document";
-//            return "Error! Не удалось загрузить файл, потому что он пустой.";
+            //            return "Error! Не удалось загрузить файл, потому что он пустой.";
         }
+
+        // начинаем обработку файла
+
+        // проверяем наличие папок для сохранения и вывода
+        boolean uploadDirCreated = true;
+        boolean outputDirCreated = true;
+        boolean tempDirCreated = true;
+
+        File outputDir = new File("output/");   // папка вывода
+        File uploadDir = new File("uploadedfiles/");    // папка сохранения
+        File tempDir = new File("temp/");   // папка для временных данных
+
+        if(!uploadDir.exists())
+        {
+            uploadDirCreated = uploadDir.mkdir();
+        }
+        if(!outputDir.exists())
+        {
+            outputDirCreated = outputDir.mkdir();
+        }
+        if(!tempDir.exists())
+        {
+            tempDirCreated = tempDir.mkdir();
+        }
+
+        // проверка наличия
+        if(!uploadDirCreated || !outputDirCreated || !tempDirCreated)
+        {
+            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+            resultDownloadModel.setErrorMessage("Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!");
+            return "sign/service/result_download_document";
+//                    return "Не удалось загрузить файл, т.к. файловая система не позволяет выполнить сохранение!";
+        }
+
+        // сохраняем файл на устройстве
+        try
+        {
+            byte[] bytes = createSignFormModel.getFile().getBytes();
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
+            stream.write(bytes);
+            stream.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+            resultDownloadModel.setErrorMessage("Не удалось загрузить " + fileName + " => " + e.getMessage());
+            return "sign/service/result_download_document";
+            //                return "Error! Не удалось загрузить " + fileName + " => " + e.getMessage();
+        }
+
+        // настраиваем обработчик документов
+        UploadedFileHandler documentHandler; // обработчик документов
+        // определяем тип полученного файла
+        if (!(fileName.endsWith(".docx") || fileName.endsWith(".doc") || fileName.endsWith(".rtf") || fileName.endsWith(".pdf") || fileName.endsWith(".xlsx") || fileName.endsWith(".xls")))
+        {
+            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SUPPORTING);
+            resultDownloadModel.setErrorMessage("Данный тип файлов не поддерживается!");
+            return "sign/service/result_download_document";
+        }
+
+        CryptoPROCertificateModel cert = null;
+        if(!createSignFormModel.isTemplate())    // если мы работаем с реальной подписью
+        {
+            cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+        }
+
+        String outputFileName = "";
+        signCreateQueueService.addTask(user.getId(), fileName, currentDir, cert, createSignFormModel);      // добавляем задачу в очередь
+
+
+//        SignCreateTask task = new SignCreateTask(0L, 0L, fileName, currentDir, cert, createSignFormModel, signImageCreator, documentHandler, cryptoProSignService);
+
+//        // создаём изображение подписи
+//        signImageCreator.setImageGerbPath(signImageLogoPath);       // указываем путь к гербу
+//        signImageCreator.createSignImage(singImagePath, createSignFormModel); // создаём изображение подписи
+
+        // обрабатываем полученный файл
+//        documentHandler.setSingImagePath(singImagePath); // указываем путь к картинке, которую нужно будет вставить
+//        documentHandler.setParams(createSignFormModel);    // указываем параметры обработки
+//        outputFileName = documentHandler.processDocument(fileName);   // запускаем обработку
+
+        if(createSignFormModel.isTemplate())    // если мы работаем с шаблонами
+        {
+            resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
+            resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
+            return "sign/service/result_download_document";
+//                    return "OK! http://localhost:8080/sign/download?file=" + outputFileName;
+        }
+        else    // если мы работаем с реальной подписью
+        {
+            try
+            {
+                // создаём подпись
+//                String fileForSignName = currentDir + "/output/" + outputFileName;   // получаем оригинальное название файла, который был загружен
+//                CryptoPROCertificateModel cert = cryptoProSignService.getCertificateBySerialNumber(createSignFormModel.getSignCertificate());   // получаем сертификат по его серийному номеру
+//                cryptoProSignService.createSign(fileForSignName, cert, "12345678", true);   // создаём подпись
+
+                resultDownloadModel.setStatus(FileProcessingResultStatus.OK);
+                resultDownloadModel.setDigitalSign(true);      // ставим, что есть цифровая подпись
+                resultDownloadModel.setFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName);
+                resultDownloadModel.setSignFileDownloadLink("http://localhost:8080/sign/download?file=" + outputFileName + ".sig");
+                return "sign/service/result_download_document";
+//                        return "OK! http://localhost:8080/sign/download?file=" + outputFileName + "\n http://localhost:8080/sign/download?file=" + outputFileName + ".sig";
+            }
+            catch (java.security.ProviderException providerException)   // ошибка лицензии
+            {
+                resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_CRYPTO_PRO_EXCEPTION);
+                resultDownloadModel.setErrorMessage("Ошибка КриптоПРО JSP: " + providerException.getMessage());
+                return "sign/service/result_download_document";
+//                        return "Error! Ошибка КриптоПРО JSP: " + providerException.getMessage();
+            }
+        }
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//
+//            resultDownloadModel.setStatus(FileProcessingResultStatus.ERROR_FILE_NOT_SAVED);
+//            resultDownloadModel.setErrorMessage("Не удалось загрузить " + fileName + " => " + e.getMessage());
+//            return "sign/service/result_download_document";
+////                return "Error! Не удалось загрузить " + fileName + " => " + e.getMessage();
+//        }
     }
 
     @RequestMapping(value = "/download", method = RequestMethod.GET)
