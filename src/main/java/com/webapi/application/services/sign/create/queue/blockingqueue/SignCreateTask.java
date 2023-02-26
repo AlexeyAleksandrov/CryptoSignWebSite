@@ -11,9 +11,12 @@ import com.webapi.application.services.handlers.UploadedFileHandler;
 import com.webapi.application.services.handlers.Word.WordHandlerException;
 import com.webapi.application.services.signImage.SignImageCreator;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 
 import java.io.IOException;
 
+@Getter
 public class SignCreateTask implements Runnable
 {
     private Long taskId;    // id задачи
@@ -57,6 +60,7 @@ public class SignCreateTask implements Runnable
             }
 
             System.out.println("Готово! " + outputFileName);
+            // TODO: Сделать запись результата обработки в базу данных
         }
         catch (Exception e)
         {
@@ -68,4 +72,6 @@ public class SignCreateTask implements Runnable
     {
         return outputFileName;
     }
+
+
 }

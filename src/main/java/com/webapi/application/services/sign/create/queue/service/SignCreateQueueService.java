@@ -29,6 +29,8 @@ public class SignCreateQueueService
 
     @Getter
     private final SignCreateBlockingQueue blockingQueue;  // блокирующая очередь задач на подпись
+    @Getter
+    private Long currentTaskId = 0L;    // id текущей задачи
 
     public SignCreateQueueService(SignImageCreator signImageCreator, CryptoProSignService cryptoProSignService, WordHandler wordHandler, ExcelHandler excelHandler, PDFHandler pdfHandler, SignCreateBlockingQueue blockingQueue)
     {
@@ -49,7 +51,9 @@ public class SignCreateQueueService
             {
                 while (true)
                 {
-                    SignCreateQueueService.this.blockingQueue.getNextTask().run();  // запускаем задачу на выполнение
+                    SignCreateTask task = SignCreateQueueService.this.blockingQueue.getNextTask();  // получаем следующую задачу на выполнение
+                    currentTaskId = task.getTaskId();   // сохраняем ID текущей задачи
+                    task.run();  // запускаем задачу на выполнение
                 }
             }
         });
@@ -82,7 +86,8 @@ public class SignCreateQueueService
             documentHandler.setCurrentDir(currentDir);
         }
 
-        SignCreateTask task = new SignCreateTask(0L, userId, fileName, currentDir, cert, createSignFormModel, signImageCreator, documentHandler, cryptoProSignService);
-        blockingQueue.addTask(task);
+        Long taskId = blockingQueue.getLastTaskId();    // получаем ID для задачи
+        SignCreateTask task = new SignCreateTask(taskId, userId, fileName, currentDir, cert, createSignFormModel, signImageCreator, documentHandler, cryptoProSignService);
+        blockingQueue.addTask(task);    // добавляем задачу в очередь
     }
 }
